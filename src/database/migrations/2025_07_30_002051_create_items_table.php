@@ -21,12 +21,7 @@ class CreateItemsTable extends Migration
             $table->string('brand')->nullable();
             $table->integer('price');
             $table->text('description');
-            $table->enum('condition', [
-                '良好',
-                '目立った傷や汚れなし',
-                'やや傷や汚れあり',
-                '状態が悪い'
-            ]);
+            $table->enum('condition', [1, 2, 3, 4])->comment('1:良好, 2:目立った傷や汚れなし, 3:やや傷や汚れあり, 4:状態が悪い');
             $table->timestamps();
         });
     }

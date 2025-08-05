@@ -24,7 +24,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 15000,
             'description' => 'スタイリッシュなデザインのメンズ腕時計',
-            'condition' => '良好',
+            'condition' => 1,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['ファッション']],
@@ -39,7 +39,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 5000,
             'description' => '高速で信頼性の高いハードディスク',
-            'condition' => '目立った傷や汚れなし',
+            'condition' => 2,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['家電']],
@@ -54,7 +54,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 300,
             'description' => '新鮮な玉ねぎ3束のセット',
-            'condition' => 'やや傷や汚れあり',
+            'condition' => 3,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['キッチン']]
@@ -69,7 +69,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 4000,
             'description' => 'クラシックなデザインの革靴',
-            'condition' => '状態が悪い',
+            'condition' => 4,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['ファッション']],
@@ -85,7 +85,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 45000,
             'description' => '高性能なノートパソコン',
-            'condition' => '良好',
+            'condition' => 1,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['家電']]
@@ -101,7 +101,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 8000,
             'description' => '高音質のレコーディング用マイク',
-            'condition' => '目立った傷や汚れなし',
+            'condition' => 2,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['おもちゃ']],
@@ -117,7 +117,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 3500,
             'description' => 'おしゃれなショルダーバッグ',
-            'condition' => 'やや傷や汚れあり',
+            'condition' => 3,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['ファッション']],
@@ -133,7 +133,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 500,
             'description' => '使いやすいタンブラー',
-            'condition' => '状態が悪い',
+            'condition' => 4,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['キッチン']],
@@ -150,7 +150,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 4000,
             'description' => '手動のコーヒーミル',
-            'condition' => '良好',
+            'condition' => 1,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['キッチン']],
@@ -166,7 +166,7 @@ class ItemsTableSeeder extends Seeder
             'brand' => null,
             'price' => 2500,
             'description' => '便利なメイクアップセット',
-            'condition' => '目立った傷や汚れなし',
+            'condition' => 2,
         ]);
         DB::table('category_item')->insert([
             ['item_id' => $itemId, 'category_id' => $categories['ファッション']],
