@@ -4,17 +4,56 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Purchase;
+use App\Models\Like;
+use App\Models\Comment;
 
 class Item extends Model
 {
     use HasFactory;
 
-    // enum型の定数をconstで定数として明記する。
-    // 定義したいもの'良好','目立った傷や汚れなし','やや傷や汚れあり','状態が悪い'
+    // itemsのマイグレーションファイル：enum型の定数
     const CONDITION = [
         1 => '良好',
         2 => '目立った傷や汚れなし',
         3 => 'やや傷や汚れあり',
         4 => '状態が悪い'
     ];
+
+    protected $fillable = [
+        'user_id',
+        'item_name',
+        'item_image',
+        'brand',
+        'price',
+        'description',
+        'condition',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id')->withTimestamps();
+    }
+
+    public function purchase()
+    {
+        return $this->hasOne(Purchase::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
