@@ -1,0 +1,36 @@
+.header {
+    background-color: #000000;
+}
+
+.header__inner {
+    max-width: 1400px;
+    height: 80px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header__logo {
+    width: calc(100% / 3);
+}
+
+.header__logo--item {
+    text-decoration: none;
+    width: 90%;
+}
+
+.header__logo--item img {
+    display: inline-block;
+    width: 100%;
+}
+
+.header__form {
+    width: calc(100% / 3);
+}
+
+
+.header__item {
+    width: calc(100% / 3);
+}
