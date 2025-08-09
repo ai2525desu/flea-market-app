@@ -18,12 +18,12 @@
 
 .header__logo--item {
     text-decoration: none;
-    width: 90%;
 }
 
 .header__logo--item img {
     display: inline-block;
-    width: 100%;
+    width: 90%;
+    height: auto;
 }
 
 .header__form {
