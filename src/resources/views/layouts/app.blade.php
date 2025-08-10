@@ -14,62 +14,64 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="header__inner">
-            <div class="header__logo">
-                <a class="header__logo--item" href="{{ route('items.index') }}">
-                    <img src="{{ asset('storage/logo.svg') }}" alt="COACHTECH_logo">
-                </a>
-            </div>
-            <div class="header__form">
-                <form class="search-form" action="{{ route('items.index') }}" method="get">
-                    <input class="search-form__input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
-                </form>
-            </div>
-            <div class="header__item">
-                @guest
-                <div class="header__item--nav">
-                    <nav class="nav__wrap">
-                        <ul class="nav__list">
-                            <li class="nav__item">
-                                <a class="screen-transition" href="{{ route('auth.login') }}">ログイン</a>
-                            </li>
-                            <li class="nav__item">
-                                <a class="screen-transition" href="{{ route('profiles.show') }}">マイページ</a>
-                            </li>
-                            <li class="nav__item">
-                                <a class="screen-transition__sell" href="{{ route('items.exhibition') }}">出品</a>
-                            </li>
-                        </ul>
-                    </nav>
+    <div class="layout">
+        <header class="header">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <a class="header__logo--item" href="{{ route('items.index') }}">
+                        <img src="{{ asset('storage/logo.svg') }}" alt="COACHTECH_logo">
+                    </a>
                 </div>
-                @endguest
-                @auth
-                <div class="header__item--nav">
-                    <div class="nav__logout-button">
-                        <form class="logout-form__button" action="/logout" method="post">
-                            @csrf
-                            <button class="logout-form__button--submit">ログアウト</button>
-                        </form>
+                <div class="header__form">
+                    <form class="search-form" action="{{ route('items.index') }}" method="get">
+                        <input class="search-form__input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
+                    </form>
+                </div>
+                <div class="header__item">
+                    @guest
+                    <div class="header__item--nav">
+                        <nav class="nav__wrap">
+                            <ul class="nav__list">
+                                <li class="nav__item">
+                                    <a class="screen-transition" href="{{ route('auth.login') }}">ログイン</a>
+                                </li>
+                                <li class="nav__item">
+                                    <a class="screen-transition" href="{{ route('profiles.show') }}">マイページ</a>
+                                </li>
+                                <li class="nav__item">
+                                    <a class="screen-transition__sell" href="{{ route('items.exhibition') }}">出品</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
-                    <nav class="nav__wrap">
-                        <ul class="nav__list">
-                            <li class="nav__item">
-                                <a class="screen-transition" href="{{ route('profiles.show') }}">マイページ</a>
-                            </li>
-                            <li class="nav__item">
-                                <a class="screen-transition__sell" href="{{ route('items.exhibition') }}">出品</a>
-                            </li>
-                        </ul>
-                    </nav>
+                    @endguest
+                    @auth
+                    <div class="header__item--nav">
+                        <div class="nav__logout-button">
+                            <form class="logout-form__button" action="/logout" method="post">
+                                @csrf
+                                <button class="logout-form__button--submit">ログアウト</button>
+                            </form>
+                        </div>
+                        <nav class="nav__wrap">
+                            <ul class="nav__list">
+                                <li class="nav__item">
+                                    <a class="screen-transition" href="{{ route('profiles.show') }}">マイページ</a>
+                                </li>
+                                <li class="nav__item">
+                                    <a class="screen-transition__sell" href="{{ route('items.exhibition') }}">出品</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    @endauth
                 </div>
-                @endauth
             </div>
-        </div>
-    </header>
-    <main class="main">
-        @yield('content')
-    </main>
+        </header>
+        <main class="main">
+            @yield('content')
+        </main>
+    </div>
 </body>
 
 </html>

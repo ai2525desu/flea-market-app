@@ -14,24 +14,26 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="header__inner">
-            <div class="header__logo">
-                <a class="header__logo--item" href="{{ route('items.index') }}">
-                    <img src="{{ asset('storage/logo.svg') }}" alt="COACHTECH_logo">
-                </a>
+    <div class="layout">
+        <header class="header">
+            <div class="header__inner">
+                <div class="header__logo">
+                    <a class="header__logo--item" href="{{ route('items.index') }}">
+                        <img src="{{ asset('storage/logo.svg') }}" alt="COACHTECH_logo">
+                    </a>
+                </div>
+                <div class="header__form">
+                    <!-- app.blade.phpと同様、flexによる三分割レイアウトを維持するために空要素 -->
+                </div>
+                <div class="header__item">
+                    <!-- app.blade.phpと同様、flexによる三分割レイアウトを維持するために空要素 -->
+                </div>
             </div>
-            <div class="header__form">
-                <!-- app.blade.phpと同様、flexによる三分割レイアウトを維持するために空要素 -->
-            </div>
-            <div class="header__item">
-                <!-- app.blade.phpと同様、flexによる三分割レイアウトを維持するために空要素 -->
-            </div>
-        </div>
-    </header>
-    <main class="main">
-        @yield('content')
-    </main>
+        </header>
+        <main class="main">
+            @yield('content')
+        </main>
+    </div>
 </body>
 
 </html>
