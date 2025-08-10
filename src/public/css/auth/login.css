@@ -1,0 +1,140 @@
+.login-form__content {
+    max-width: 1400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 30px 0;
+}
+
+.login-form__form-wrap,
+.login-form__content--screen-transition {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.login-form__heading {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 36px;
+    color: #000;
+}
+
+.login-form__group {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+
+
+.login-form__group--label {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+    color: #000;
+}
+
+.login-form__group--content input {
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    border: 1px solid #5F5F5F;
+    border-radius: 4px;
+    outline: none;
+}
+
+.login-form__group--error {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+    color: #FF5555;
+}
+
+.login-form__button {
+    margin-top: 80px;
+}
+
+.login-form__button--submit {
+    appearance: none;
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 40px;
+    background-color: #FF5555;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 26px;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+.login-form__content--screen-transition {
+    margin-top: 30px;
+}
+
+.screen-transition__register {
+    appearance: none;
+    text-decoration: none;
+    cursor: pointer;
+    color: #0073CC;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+}
+
+@media screen and (max-width:850px) {
+    .login-form__heading {
+        font-size: 32px;
+    }
+
+    .login-form__group--label {
+        font-size: 18px;
+    }
+
+    .login-form__group--content input {
+        height: 26px;
+        font-size: 16px;
+    }
+
+    .login-form__button--submit {
+        height: 26px;
+        font-size: 18px;
+    }
+
+    .screen-transition__register {
+        font-size: 18px;
+    }
+
+}
+
+@media screen and (max-width:767px) {
+    .login-form__heading {
+        font-size: 26px;
+    }
+
+    .login-form__group--label {
+        font-size: 14px;
+    }
+
+    .login-form__group--content input {
+        height: 22px;
+        font-size: 14px;
+    }
+
+    .login-form__button--submit {
+        height: 22px;
+        font-size: 14px;
+    }
+
+    .screen-transition__register {
+        font-size: 14px;
+    }
+}
