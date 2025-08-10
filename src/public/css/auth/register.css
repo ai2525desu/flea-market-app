@@ -88,3 +88,23 @@
     font-style: normal;
     font-size: 20px;
 }
+
+@media screen and (max-width:850px) {
+    .register-form__heading {
+        font-size: 32px;
+    }
+
+    .register-form__group--label {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .register-form__heading {
+        font-size: 26px;
+    }
+
+    .register-form__group--label {
+        font-size: 14px;
+    }
+}
