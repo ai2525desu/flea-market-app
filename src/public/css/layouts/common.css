@@ -23,9 +23,12 @@
     text-align: center;
 }
 
-.header__logo {
+.header__logo,
+.header__form,
+.header__item {
     width: calc(100% / 3);
 }
+
 
 .header__logo--item {
     text-decoration: none;
@@ -36,10 +39,6 @@
     width: 100%;
     max-width: 80%;
     height: auto;
-}
-
-.header__form {
-    width: calc(100% / 3);
 }
 
 .search-form {
@@ -60,11 +59,9 @@
     outline: none;
     border: none;
     border-radius: 5px;
+    white-space: nowrap;
 }
 
-.header__item {
-    width: calc(100% / 3);
-}
 
 .header__item--nav {
     height: 100%;
@@ -73,7 +70,6 @@
     align-items: center;
 }
 
-/* nav__logout-buttonの部分ログイン後にしかブラウザで確認できないので要確認 */
 .logout-form__button {
     width: 100%;
 }
@@ -89,6 +85,8 @@
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
+    font-size: 24px;
+    white-space: nowrap;
 }
 
 .nav__wrap {
@@ -102,6 +100,7 @@
     font-weight: 400;
     font-style: normal;
     font-size: 24px;
+    white-space: nowrap;
 }
 
 .nav__list {
@@ -118,7 +117,8 @@
     background-color: #FFFFFF;
     color: #000000;
     border-radius: 4px;
-    padding: 10px 20px;
+    padding: 5px 10px;
+    min-width: 30px;
 }
 
 /* レスポンシブ対応 */
@@ -131,21 +131,33 @@
         font-size: 18px;
     }
 
+    .logout-form__button--submit,
     .nav__wrap a {
         font-size: 18px;
     }
+
 }
 
 @media screen and (max-width:767px) {
     .header__inner {
-        min-height: 40px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
     }
 
     .search-form input {
         font-size: 14px;
     }
 
+    .logout-form__button--submit,
     .nav__wrap a {
         font-size: 14px;
+    }
+
+    .header__logo,
+    .header__form,
+    .header__item {
+        height: calc(100% / 3);
     }
 }

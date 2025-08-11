@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 
 // 8/7 23:23app.blade.phpのファイルに関連するルーティングと各ファイルをとりあえず整備して表示できるようにした
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
-Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
 
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/register', [AuthController::class, 'store']);
@@ -26,4 +25,9 @@ Route::post('/register', [AuthController::class, 'store']);
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
-Route::get('/mypage', [ProfileController::class, 'show'])->name('profiles.show');
+// 認証ミドルウェアの必要な部分は下記に記述。そうすると自動的に未認証の場合はログイン画面に遷移する
+// 現在ブラウザ表示の確認のためにミドルウェアOFF
+Route::middleware('auth')->group(function () {
+    Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
+    Route::get('/mypage', [ProfileController::class, 'show'])->name('profiles.show');
+});
