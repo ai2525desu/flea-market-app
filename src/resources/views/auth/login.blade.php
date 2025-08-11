@@ -5,6 +5,16 @@
 @endsection
 
 @section('content')
+<!-- コントローラーのフラッシュメッセージで設定 -->
+@if(session('errorMessage'))
+<div class="login-alert">
+    <div class="login-alert__error">
+        <!-- フラッシュメッセージ設定後文章削除でコメントアウト部分復活させること！ -->
+        <!-- ログイン情報が登録されていません。 -->
+        {{ session('errorMessage') }}
+    </div>
+</div>
+@endif
 <div class="login-form__content">
     <div class="login-form__form-wrap">
         <h2 class="login-form__heading">

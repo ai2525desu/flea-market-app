@@ -21,6 +21,9 @@ Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
 
 Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('/register', [AuthController::class, 'store']);
+
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::get('/mypage', [ProfileController::class, 'show'])->name('profiles.show');

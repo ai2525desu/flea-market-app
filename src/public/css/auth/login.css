@@ -1,3 +1,15 @@
+.login-alert__error {
+    padding: 5px 0;
+    background-color: #f8d7da;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 18px;
+    color: #FF5555;
+}
+
 .login-form__content {
     max-width: 1400px;
     margin: 0 auto;
@@ -91,6 +103,10 @@
 }
 
 @media screen and (max-width:850px) {
+    .login-alert__error {
+        font-size: 18px;
+    }
+
     .login-form__heading {
         font-size: 32px;
     }
@@ -101,6 +117,10 @@
 
     .login-form__group--content input {
         height: 26px;
+        font-size: 16px;
+    }
+
+    .login-form__group--error {
         font-size: 16px;
     }
 
@@ -116,6 +136,10 @@
 }
 
 @media screen and (max-width:767px) {
+    .login-alert__error {
+        font-size: 14px;
+    }
+
     .login-form__heading {
         font-size: 26px;
     }
@@ -126,6 +150,10 @@
 
     .login-form__group--content input {
         height: 22px;
+        font-size: 14px;
+    }
+
+    .login-form__group--error {
         font-size: 14px;
     }
 

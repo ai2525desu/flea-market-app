@@ -2,19 +2,48 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    // ユーザー登録画面の表示
+
     public function register()
     {
         return view('auth.register');
     }
 
-    // ログイン画面の表示
+    public function store(RegisterRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('profiles.edit');
+    }
+
+
     public function login()
     {
         return view('auth.login');
+    }
+
+    public function authenticate(LoginRequest $request)
+    {
+        $user = $request->only('email', 'password');
+
+        if (Auth::attempt($user)) {
+            $request->session()->regenerate();
+            return redirect()->route('items.index');
+        } else {
+            return back()->with('errorMessage', 'ログイン情報が登録されていません。');
+        }
     }
 }
