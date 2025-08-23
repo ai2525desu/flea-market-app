@@ -147,17 +147,22 @@
     }
 
     .search-form input {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .logout-form__button--submit,
     .nav__wrap a {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .header__logo,
     .header__form,
     .header__item {
         height: calc(100% / 3);
+    }
+
+    .screen-transition__sell {
+        padding: 3px 7px;
+        margin-left: 5px;
     }
 }
