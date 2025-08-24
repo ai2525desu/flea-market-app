@@ -11,6 +11,7 @@
             プロフィール設定
         </h2>
         <!-- いったん初回ログイン登録時のmethod="post"を作成 -->
+        <!-- モデル上にupdateOrCreateメソッドを使用することで行けると思う -->
         <form class="profile-edit-form__form" action="{{ route('profiles.edit') }}" method="post" novalidate>
             @csrf
             <div class="profile-edit-form__group">
@@ -18,7 +19,7 @@
                     <div class="profile-image__wrap">
                         <div class="profile-image__content">
                             <!-- この部分、後で編集時に変更必須もぎたてのdetail参考に -->
-                            <img id="profile-image" src="#" class="profile-image" alt="プロフィール画像">
+                            <img id="profile-image" src="#" class="profile-image">
                             <input id="image" type="file" name="image" class="profile-image__input" accept="image/">
                         </div>
                         <div class="profile-image__label">
