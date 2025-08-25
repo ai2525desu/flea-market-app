@@ -10,17 +10,19 @@
         <h2 class="profile-edit-form__heading">
             プロフィール設定
         </h2>
-        <!-- いったん初回ログイン登録時のmethod="post"を作成 -->
-        <!-- モデル上にupdateOrCreateメソッドを使用することで行けると思う -->
-        <form class="profile-edit-form__form" action="{{ route('profiles.edit') }}" method="post" novalidate>
+        <form class="profile-edit-form__form" action="{{ route('profiles.edit') }}" method="post" enctype="multipart/form-data" novalidate>
             @csrf
             <div class="profile-edit-form__group">
                 <div class="profile-edit-form__group--content">
                     <div class="profile-image__wrap">
                         <div class="profile-image__content">
-                            <!-- この部分、後で編集時に変更必須もぎたてのdetail参考に -->
-                            <img id="profile-image" src="#" class="profile-image">
-                            <input id="image" type="file" name="image" class="profile-image__input" accept="image/">
+                            @if ($user->profile?->image)
+                            <img id="preview-image" src="{{  asset('storage/' . $user->profile?->image) }}">
+                            <input type="hidden" name="old_image" value="{{ $user->profile?->image }}">
+                            @endif
+                            <!-- <img id="profile-image" src="#" class="profile-image"> -->
+                            <img src="#" class="profile-image">
+                            <input id="image" type="file" name="image" class="profile-image__input" accept="image/*">
                         </div>
                         <div class="profile-image__label">
                             <label for="image" class="profile-image__button">画像を選択する</label>
@@ -57,7 +59,7 @@
                     </label>
                 </div>
                 <div class="profile-edit-form__group--content">
-                    <input id="post_code" type="text" name="post_code" value="{{ old('post_code') }}">
+                    <input id="post_code" type="text" name="post_code" value="{{ old('post_code', $user->address?->post_code) }}">
                 </div>
                 <div class="profile-edit-form__group--error">
                     @error('post_code')
@@ -73,7 +75,7 @@
                     </label>
                 </div>
                 <div class="profile-edit-form__group--content">
-                    <input id="address" type="text" name="address" value="{{ old('address') }}">
+                    <input id="address" type="text" name="address" value="{{ old('address', $user->address?->address) }}">
                 </div>
                 <div class="profile-edit-form__group--error">
                     @error('address')
@@ -88,12 +90,7 @@
                     </label>
                 </div>
                 <div class="profile-edit-form__group--content">
-                    <input id="building" type="text" name="building" value="{{ old('building') }}">
-                </div>
-                <div class="profile-edit-form__group--error">
-                    @error('building')
-                    {{ $message }}
-                    @enderror
+                    <input id="building" type="text" name="building" value="{{ old('building', $user->address?->building) }}">
                 </div>
             </div>
             <div class="profile-edit-form__button">
@@ -112,9 +109,11 @@
 
         const reader = new FileReader();
         reader.onload = function(e) {
-            const preview = document.getElementById('profile-image');
-            preview.src = e.target.result;
-            preview.style.display = 'block';
+            const preview = document.getElementById('preview-image');
+            if (preview) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
         }
         reader.readAsDataURL(file);
 

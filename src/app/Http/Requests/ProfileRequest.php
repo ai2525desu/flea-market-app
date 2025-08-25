@@ -13,7 +13,7 @@ class ProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,29 @@ class ProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $rules = [
+            'image' => 'nullable|mimes:jpeg,png',
+            'name' => 'required|max:20',
+            'post_code' => 'required|regex:/^\d{3}-\d{4}$/',
+            'address' => 'required',
+        ];
+
+        if ($this->hasFile('image')) {
+            $rules['image'] = 'sometimes|file|mimes:png,jpeg';
+        }
+
+        return $rules;
+    }
+
+    public function messages()
+    {
         return [
-            //
+            'image.mimes' => '「.jpeg」または「.png」形式でアップロードしてください',
+            'name.required' => 'お名前を入力してください',
+            'name.max' => 'お名前は20文字以内で入力してください',
+            'post_code.required' => '郵便番号を入力してください',
+            'post_code.regex' => '郵便番号をハイフンありの"123-4567"の形式で入力してください',
+            'address.required' => '郵便番号を入力してください'
         ];
     }
 }

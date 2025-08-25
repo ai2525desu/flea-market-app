@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -19,18 +19,39 @@ class ProfileController extends Controller
         return view('profiles.edit', compact('user'));
     }
 
-    public function store(ProfileRequest $request)
+    public function update(ProfileRequest $request)
     {
-        // プロフィール画像はProfileのモデルを通してマイグレーションファイルへ
-        // 住所はUserモデルのリレーションaddressを経由してマイグレーションファイルに保存？それとも、Addressモデルを経由して保存？ビューの表示は、Userモデルからリレーションで取得できると思う
-        // ユーザー名は、すでに登録済みなので不要。user_idから情報を持ってきてあらかじめ入力される仕組みではないか？
-        // $profile = Profile::create(['image' => $request->image]);
-        // // この部分、user_idを経由して保存？
-        // $addresses = Address::create([
-        //     'post_code' => $request->post_code,
-        //     'address' => $request->address,
-        //     'building' => $request->building
-        // ]);
 
+        $user = Auth::user();
+
+        $oldImage = $request->old_image;
+
+        if ($request->hasFile('image')) {
+            if ($oldImage && Storage::disk('public')->exists($oldImage)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+            $imagePath = $request->file('image')->store('profiles', 'public');
+        } else {
+            // $imagePath = $user->profile?->image;
+            $imagePath = $oldImage;
+        }
+
+        $user->profile()->updateOrCreate(
+            [],
+            [
+                'image' => $imagePath
+            ]
+        );
+
+        $user->address()->updateOrCreate(
+            [],
+            [
+                'post_code' => $request->post_code,
+                'address' => $request->address,
+                'building' => $request->building
+            ]
+        );
+        dd($user);
+        return redirect()->route('items.index');
     }
 }
