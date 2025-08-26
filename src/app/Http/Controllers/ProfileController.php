@@ -32,7 +32,6 @@ class ProfileController extends Controller
             }
             $imagePath = $request->file('image')->store('profiles', 'public');
         } else {
-            // $imagePath = $user->profile?->image;
             $imagePath = $oldImage;
         }
 
@@ -51,7 +50,7 @@ class ProfileController extends Controller
                 'building' => $request->building
             ]
         );
-        dd($user);
+        // 8/26 22:21 下記の部分、新規登録後のリダイレクト先と更新時のリダイレクト先を分ける必要があるかコーチに確認中
         return redirect()->route('items.index');
     }
 }

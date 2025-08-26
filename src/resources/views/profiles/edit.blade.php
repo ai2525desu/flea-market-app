@@ -17,11 +17,11 @@
                     <div class="profile-image__wrap">
                         <div class="profile-image__content">
                             @if ($user->profile?->image)
-                            <img id="preview-image" src="{{  asset('storage/' . $user->profile?->image) }}">
-                            <input type="hidden" name="old_image" value="{{ $user->profile?->image }}">
+                            <img id="old-preview-image" src="{{  asset('storage/' . $user->profile->image) }}">
+                            <input type="hidden" name="old_image" value="{{ $user->profile->image }}">
+                            @else
+                            <img id="new-preview-image" src="#" class="profile-image">
                             @endif
-                            <!-- <img id="profile-image" src="#" class="profile-image"> -->
-                            <img src="#" class="profile-image">
                             <input id="image" type="file" name="image" class="profile-image__input" accept="image/*">
                         </div>
                         <div class="profile-image__label">
@@ -51,7 +51,6 @@
                     @enderror
                 </div>
             </div>
-            <!-- 郵便番号 -->
             <div class="profile-edit-form__group">
                 <div class="profile-edit-form__group--title">
                     <label for="post_code" class="profile-edit-form__group--label">
@@ -67,7 +66,6 @@
                     @enderror
                 </div>
             </div>
-            <!-- 住所 -->
             <div class="profile-edit-form__group">
                 <div class="profile-edit-form__group--title">
                     <label for="address" class="profile-edit-form__group--label">
@@ -109,7 +107,7 @@
 
         const reader = new FileReader();
         reader.onload = function(e) {
-            const preview = document.getElementById('preview-image');
+            const preview = document.getElementById('old-preview-image') || document.getElementById('new-preview-image');
             if (preview) {
                 preview.src = e.target.result;
                 preview.style.display = 'block';
