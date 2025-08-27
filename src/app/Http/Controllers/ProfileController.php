@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        return view('profiles.show');
+        $user = Auth::user();
+        return view('profiles.show', compact('user'));
     }
 
     public function edit()
@@ -50,7 +52,6 @@ class ProfileController extends Controller
                 'building' => $request->building
             ]
         );
-        // 8/26 22:21 下記の部分、新規登録後のリダイレクト先と更新時のリダイレクト先を分ける必要があるかコーチに確認中
-        return redirect()->route('items.index');
+        return redirect()->route('profiles.show');
     }
 }
