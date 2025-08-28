@@ -1,9 +1,9 @@
 .profile-show-content__wrap {
     display: grid;
-    grid-template-rows: auto auto 60%;
+    grid-template-rows: auto 1fr;
     grid-template-columns: 100%;
-    gap: 10px;
-    padding: 30px 0;
+    margin: 30px 0;
+    row-gap: 20px;
 }
 
 .profile-show-content__user-information {
@@ -12,6 +12,7 @@
     justify-content: space-between;
     align-items: center;
     width: 60%;
+    height: 100%;
 }
 
 .user-information__profile-image {
@@ -54,4 +55,69 @@
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
+}
+
+.profile-show-content__product-information {
+    width: 100%;
+    height: fit-content;
+}
+
+.product-tab__header {
+    border-bottom: 2px solid #5F5F5F;
+}
+
+.product-tab__heading {
+    width: 50%;
+    margin: 0;
+    padding: 10px 0;
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px;
+}
+
+.product-tab__item {
+    list-style: none;
+    padding-left: 0;
+    cursor: pointer;
+}
+
+.product-tab__item.is-active {
+    color: #FF0000;
+}
+
+.product-tab__body {
+    width: 90%;
+    margin: 30px auto 0;
+}
+
+.product-tab__content {
+    display: none;
+}
+
+.product-tab__content.is-active {
+    display: block;
+}
+
+/* flex-startだと変な余白ができてしまう。HTMLコーディングの本を参考にgridレイアウトの使用を確認：しおりのぶぶん */
+.exhibition-product-card__list {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+/* 8/29：ちゃんと画像が配列取得できているか確認のため仮の状態 */
+.exhibition-product-card__wrap {
+    width: 20%;
+    height: auto;
+    object-fit: cover;
+}
+
+.exhibition-product-card__wrap img {
+    width: 100%;
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
@@ -11,8 +12,9 @@ class ProfileController extends Controller
 {
     public function show(Request $request)
     {
-        $user = Auth::user();
-        return view('profiles.show', compact('user'));
+        $user = Auth::user()->load('profile');
+        $items = Item::all();
+        return view('profiles.show', compact('user', 'items'));
     }
 
     public function edit()
