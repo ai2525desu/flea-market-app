@@ -8,7 +8,9 @@
 <div class="profile-show-content__wrap">
     <div class="profile-show-content__user-information">
         <div class="user-information__profile-image">
-            <img src="{{  asset('storage/' . $user->profile?->image) }}" class="profile-image">
+            @if ($user->profile->image)
+            <img src="{{  asset('storage/' . $user->profile->image) }}" class="profile-image">
+            @endif
         </div>
         <p class="user-information__user-name">
             {{ $user->name }}

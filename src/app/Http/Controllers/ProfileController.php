@@ -13,6 +13,7 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         $user = Auth::user()->load('profile');
+        // all()で取得しているので、すべてのユーザーで出品情報など出てきてしまう
         $items = Item::all();
         return view('profiles.show', compact('user', 'items'));
     }

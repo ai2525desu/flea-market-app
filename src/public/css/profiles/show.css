@@ -108,7 +108,7 @@
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 30px;
+    row-gap: 30px;
 }
 
 /* 8/29：ちゃんと画像が配列取得できているか確認のため仮の状態 */
