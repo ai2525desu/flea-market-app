@@ -3,19 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
-use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
     public function show(Request $request)
     {
-        $user = Auth::user()->load('profile');
-        // all()で取得しているので、すべてのユーザーで出品情報など出てきてしまう
-        $items = Item::all();
-        return view('profiles.show', compact('user', 'items'));
+        $user = Auth::user()->load('profile', 'items', 'purchases');
+        $tab = $request->query('tab', 'sell');
+        return view('profiles.show', compact('user', 'tab'));
+    }
+
+    public function exhibitionList(Request $request)
+    {
+        $user = Auth::user()->load('profile', 'items');
+        $tab = $request->query('tab', 'sell');
+        return view('profiles.show', compact('user', 'tab'));
+    }
+
+    public function purchaseList(Request $request)
+    {
+        $user = Auth::user()->load('profile', 'purchases');
+        $tab = $request->query('tab', 'buy');
+        return view('profiles.show', compact('user', 'tab'));
     }
 
     public function edit()

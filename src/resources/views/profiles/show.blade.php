@@ -8,7 +8,7 @@
 <div class="profile-show-content__wrap">
     <div class="profile-show-content__user-information">
         <div class="user-information__profile-image">
-            @if ($user->profile->image)
+            @if ($user->profile?->image)
             <img src="{{  asset('storage/' . $user->profile->image) }}" class="profile-image">
             @endif
         </div>
@@ -23,15 +23,20 @@
     <div class="profile-show-content__product-information">
         <div class="product-tab__header" id="product-tab__header">
             <ul class="product-tab__heading">
-                <li class="product-tab__item is-active">出品した商品</li>
-                <li class="product-tab__item">購入した商品</li>
+                <li class="product-tab__item {{ $tab === 'sell' ? 'is_active' : '' }}">
+                    <!-- GETメソッドなので、aタグ必要かな？ -->
+                    <a href="{{  }}">出品した商品
+                </li>
+                <!-- GETメソッドなので、aタグ必要かな？ -->
+                <li class="product-tab__item {{ $tab === 'buy' ? 'is_active' : '' }}">
+                    購入した商品
+                </li>
             </ul>
         </div>
-        <!-- Blade機能で`foreachを使用する+商品画像と商品名のカードリスト -->
         <div class="product-tab__body" id="product-tab__body">
-            <div class="product-tab__content is-active">
+            <div class="product-tab__content {{ $tab === 'sell' ? 'is_active' : '' }}">
                 <div class="exhibition-product-card__list">
-                    @foreach ($items as $item)
+                    @foreach ($user->items as $item)
                     <div class="exhibition-product-card__wrap">
                         <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
                         <p class="exhibition-card__title">{{ $item->item_name }}</p>
@@ -39,9 +44,16 @@
                     @endforeach
                 </div>
             </div>
-            <div class="product-tab__content">
-                購入した商品の内容
-                <div class="purchases-product-card__wrap">
+            <div class="product-tab__content {{ $tab === 'buy' ? 'is_active' : '' }}">
+                <div class="purchase-product-card__wrap">
+                    @foreach ($user->purchases as $purchase)
+                    @if ($purchase->item)
+                    <div class="purchase-product-card__wrap">
+                        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
+                        <p class="purchase-card__title">{{ $item->item_name }}</p>
+                    </div>
+                    @endif
+                    @endforeach
 
                 </div>
             </div>
@@ -49,6 +61,7 @@
     </div>
 </div>
 
+<!-- 今は画面遷移せずにタブ切り替えできる状態だが、GETメソッドでパラメータを渡しての画面切り替えになるので書き方が変わると思われる -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const tabItems = document.querySelectorAll('.product-tab__item');
