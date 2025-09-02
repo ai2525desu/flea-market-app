@@ -131,6 +131,15 @@
     width: 100%;
 }
 
+.exhibition-card__title {
+    font-family: "Inter",
+        sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+    color: #000000;
+}
 
 
 @media screen and (max-width:850px) {

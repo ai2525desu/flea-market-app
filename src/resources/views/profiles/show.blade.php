@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="profile-show-content__product-information">
-        <div class="product-tab__header" id="product-tab__header">
+        <div class="product-tab__header">
             <ul class="product-tab__heading">
                 <li class="product-tab__item">
                     <a class="item__exhibition-list {{ $tab === 'sell' ? 'is-active' : '' }}" href="{{ route('profiles.show', ['tab' => 'sell']) }}">出品した商品</a>
@@ -31,7 +31,7 @@
                 </li>
             </ul>
         </div>
-        <div class="product-tab__body" id="product-tab__body">
+        <div class="product-tab__body">
             <div class="product-tab__content {{ $tab === 'sell' ? 'is-active' : '' }}">
                 <div class="exhibition-product-card__list">
                     @foreach ($user->items as $item)
@@ -42,7 +42,7 @@
                     @endforeach
                 </div>
             </div>
-            <div class="product-tab__content {{ $tab === 'buy' ? 'is_active' : '' }}">
+            <div class="product-tab__content {{ $tab === 'buy' ? 'is-active' : '' }}">
                 <div class="purchase-product-card__wrap">
                     @foreach ($user->purchases as $purchase)
                     @if ($purchase->item)
