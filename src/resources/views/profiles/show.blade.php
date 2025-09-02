@@ -23,18 +23,16 @@
     <div class="profile-show-content__product-information">
         <div class="product-tab__header" id="product-tab__header">
             <ul class="product-tab__heading">
-                <li class="product-tab__item {{ $tab === 'sell' ? 'is_active' : '' }}">
-                    <!-- GETメソッドなので、aタグ必要かな？ -->
-                    <a href="{{  }}">出品した商品
+                <li class="product-tab__item">
+                    <a class="item__exhibition-list {{ $tab === 'sell' ? 'is-active' : '' }}" href="{{ route('profiles.show', ['tab' => 'sell']) }}">出品した商品</a>
                 </li>
-                <!-- GETメソッドなので、aタグ必要かな？ -->
-                <li class="product-tab__item {{ $tab === 'buy' ? 'is_active' : '' }}">
-                    購入した商品
+                <li class="product-tab__item">
+                    <a class="item__purchase-list {{ $tab === 'buy' ? 'is-active' : '' }}" href="{{ route('profiles.show', ['tab' => 'buy']) }}">購入した商品</a>
                 </li>
             </ul>
         </div>
         <div class="product-tab__body" id="product-tab__body">
-            <div class="product-tab__content {{ $tab === 'sell' ? 'is_active' : '' }}">
+            <div class="product-tab__content {{ $tab === 'sell' ? 'is-active' : '' }}">
                 <div class="exhibition-product-card__list">
                     @foreach ($user->items as $item)
                     <div class="exhibition-product-card__wrap">
@@ -49,32 +47,14 @@
                     @foreach ($user->purchases as $purchase)
                     @if ($purchase->item)
                     <div class="purchase-product-card__wrap">
-                        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
-                        <p class="purchase-card__title">{{ $item->item_name }}</p>
+                        <img src="{{ asset('storage/' . $purchase->item->item_image) }}" alt="{{ $purchase->item->item_name }}">
+                        <p class="purchase-card__title">{{ $purchase->item->item_name }}</p>
                     </div>
                     @endif
                     @endforeach
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- 今は画面遷移せずにタブ切り替えできる状態だが、GETメソッドでパラメータを渡しての画面切り替えになるので書き方が変わると思われる -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const tabItems = document.querySelectorAll('.product-tab__item');
-        const tabContents = document.querySelectorAll('.product-tab__content');
-
-        tabItems.forEach((item, index) => {
-            item.addEventListener('click', () => {
-                tabItems.forEach(i => i.classList.remove('is-active'));
-                tabContents.forEach(c => c.classList.remove('is-active'));
-                item.classList.add('is-active');
-                tabContents[index].classList.add('is-active');
-            });
-        });
-    });
-</script>
 @endsection

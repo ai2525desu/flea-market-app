@@ -11,22 +11,8 @@ class ProfileController extends Controller
 {
     public function show(Request $request)
     {
+        $tab = $request->query('tab', 'sell');
         $user = Auth::user()->load('profile', 'items', 'purchases');
-        $tab = $request->query('tab', 'sell');
-        return view('profiles.show', compact('user', 'tab'));
-    }
-
-    public function exhibitionList(Request $request)
-    {
-        $user = Auth::user()->load('profile', 'items');
-        $tab = $request->query('tab', 'sell');
-        return view('profiles.show', compact('user', 'tab'));
-    }
-
-    public function purchaseList(Request $request)
-    {
-        $user = Auth::user()->load('profile', 'purchases');
-        $tab = $request->query('tab', 'buy');
         return view('profiles.show', compact('user', 'tab'));
     }
 

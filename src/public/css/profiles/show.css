@@ -90,12 +90,20 @@
     cursor: pointer;
 }
 
-.product-tab__item.is-active {
+.item__exhibition-list,
+.item__purchase-list {
+    text-decoration: none;
+    color: #5F5F5F;
+}
+
+.item__exhibition-list.is-active,
+.item__purchase-list.is-active {
+    text-decoration: none;
     color: #FF0000;
 }
 
 .product-tab__body {
-    width: 90%;
+    width: 80%;
     margin: 30px auto 0;
 }
 
