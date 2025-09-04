@@ -9,10 +9,10 @@
     <div class="product-list-tab__header">
         <ul class="product-list-tab__heading">
             <li class="product-list-tab__item">
-                <a class="item__recommendation {{ $tab === 'recommendation' ? 'is-active' : '' }}" href="{{ route('items.index', ['tab' => 'recommendation']) }}">おすすめ</a>
+                <a class="item__recommendation {{ $tab === 'recommendation' ? 'is-active' : '' }}" href="{{ route('items.index', ['tab' => 'recommendation', 'item_name' => request('item_name')]) }}">おすすめ</a>
             </li>
             <li class="product-list-tab__item">
-                <a class="item__mylist {{ $tab === 'mylist' ? 'is-active' : '' }}" href="{{ route('items.index', ['tab' => 'mylist']) }}">マイリスト</a>
+                <a class="item__mylist {{ $tab === 'mylist' ? 'is-active' : '' }}" href="{{ route('items.index', ['tab' => 'mylist', 'item_name' => request('item_name')]) }}">マイリスト</a>
             </li>
         </ul>
     </div>

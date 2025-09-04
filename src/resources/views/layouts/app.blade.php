@@ -24,7 +24,7 @@
                 </div>
                 <div class="header__form">
                     <form class="search-form" action="{{ route('items.index') }}" method="get">
-                        <input class="search-form__input" type="text" name="keyword" placeholder="なにをお探しですか？" value="{{ request('keyword') }}">
+                        <input class="search-form__input" type="text" name="item_name" placeholder="なにをお探しですか？" value="{{ request('item_name') }}">
                     </form>
                 </div>
                 <div class="header__item">
