@@ -17,16 +17,29 @@ class ItemController extends Controller
             $tab = Auth::check() ? 'mylist' : 'recommendation';
         }
 
-        // tabがmylist、ログアウトの時は内容が真っ白の空の状態になりたい。できてない
         if ($tab === 'mylist' && Auth::check()) {
-            $user = Auth::user()->load('likes');
+            $user = Auth::user()->load('likes.item.purchase');
             $items = $user->likes->pluck('item')->filter();
             return view('items.index', compact('user', 'items', 'tab'));
+        } elseif ($tab === 'mylist' && !Auth::check()) {
+            $items = collect();
+            return view('items.index', compact('items', 'tab'));
         } else {
-            $items = Item::with('user', 'likes')->get();
+            $query = Item::with('user', 'likes');
+            if (Auth::check()) {
+                $query->where('user_id', '!=', Auth::id());
+            }
+            $items = $query->get();
             $tab = 'recommendation';
             return view('items.index', compact('items', 'tab'));
         }
+    }
+
+    // 商品詳細画面
+    public function detail($item_id)
+    {
+        $item = Item::findOrFail($item_id);
+        return view('items.detail', compact('item'));
     }
 
     // 商品出品画面
