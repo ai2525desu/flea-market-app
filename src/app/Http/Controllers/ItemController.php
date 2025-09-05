@@ -20,7 +20,7 @@ class ItemController extends Controller
         if ($tab === 'mylist') {
             if (Auth::check()) {
                 $user = Auth::user();
-                $likedItemIds = $user->likes->pluck('items');
+                $likedItemIds = $user->likes->pluck('item_id');
                 $items = Item::with('user', 'likes', 'purchase')
                     ->whereIn('id', $likedItemIds)
                     ->ItemNameSearch($keyword)
@@ -37,27 +37,6 @@ class ItemController extends Controller
             $tab = 'recommendation';
         }
         return view('items.index', compact('items', 'tab'));
-
-        // 検索上、このままではできないので変更必須
-        // if ($tab === 'mylist' && Auth::check()) {
-        //     $user = Auth::user()->load('likes.item.purchase');
-        //     $items = $user->likes->pluck('item')->filter();
-        //     return view('items.index', compact('user', 'items', 'tab'));
-        // } elseif ($tab === 'mylist' && !Auth::check()) {
-        //     $items = collect();
-        //     return view('items.index', compact('items', 'tab'));
-        // } else {
-        //     $query = Item::with('user', 'likes');
-        //     if (Auth::check()) {
-        //         $query->where('user_id', '!=', Auth::id());
-        //     }
-        //     $items = $query->get();
-        //     $tab = 'recommendation';
-        //     $items = Item::ItemNameSearch($request->item_name)->get();
-        //     return view('items.index', compact('items', 'tab'));
-        // }
-
-
     }
 
     // 商品詳細画面
