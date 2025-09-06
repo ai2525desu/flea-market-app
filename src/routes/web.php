@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,4 +33,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profiles.edit');
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
     Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchase'])->name('purchases.show');
 });

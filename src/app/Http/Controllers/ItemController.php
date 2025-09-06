@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,8 +43,9 @@ class ItemController extends Controller
     // 商品詳細画面
     public function detail($item_id)
     {
-        $item = Item::findOrFail($item_id);
-        return view('items.detail', compact('item'));
+        $item = Item::with('categories')->findOrFail($item_id);
+        $condition = Item::CONDITION[$item->condition];
+        return view('items.detail', compact('item', 'condition'));
     }
 
     // 商品出品画面
