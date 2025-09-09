@@ -47,14 +47,14 @@
                     @endguest
                     @auth
                     <div class="header__item--nav">
-                        <div class="nav__logout-button">
-                            <form class="logout-form__button" action="/logout" method="post">
-                                @csrf
-                                <button class="logout-form__button--submit">ログアウト</button>
-                            </form>
-                        </div>
                         <nav class="nav__wrap">
                             <ul class="nav__list">
+                                <li class="nav__item">
+                                    <form class="logout-form__button" action="/logout" method="post">
+                                        @csrf
+                                        <button class="logout-form__button--submit">ログアウト</button>
+                                    </form>
+                                </li>
                                 <li class="nav__item">
                                     <a class="screen-transition" href="{{ route('profiles.show') }}">マイページ</a>
                                 </li>

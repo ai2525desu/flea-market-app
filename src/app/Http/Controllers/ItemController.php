@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,17 +12,13 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         $tab = $request->query('tab');
-        if (!$tab) {
-            $tab = Auth::check() ? 'mylist' : 'recommendation';
-        }
-
         $keyword = $request->query('item_name');
+
         if ($tab === 'mylist') {
             if (Auth::check()) {
-                $user = Auth::user();
+                $user = Auth::user()->load('likes.item.purchase');
                 $likedItemIds = $user->likes->pluck('item_id');
-                $items = Item::with('user', 'likes', 'purchase')
-                    ->whereIn('id', $likedItemIds)
+                $items = Item::whereIn('id', $likedItemIds)
                     ->ItemNameSearch($keyword)
                     ->get();
             } else {
@@ -35,7 +30,7 @@ class ItemController extends Controller
                 $query->where('user_id', '!=', Auth::id());
             }
             $items = $query->ItemNameSearch($keyword)->get();
-            $tab = 'recommendation';
+            $tab = '';
         }
         return view('items.index', compact('items', 'tab'));
     }

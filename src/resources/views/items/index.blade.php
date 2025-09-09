@@ -9,15 +9,15 @@
     <div class="product-list-tab__header">
         <ul class="product-list-tab__heading">
             <li class="product-list-tab__item">
-                <a class="item__recommendation {{ $tab === 'recommendation' ? 'is-active' : '' }}" href="{{ route('items.index', ['tab' => 'recommendation', 'item_name' => request('item_name')]) }}">おすすめ</a>
+                <a class="item__recommendation {{ $tab !== 'mylist' ? 'is-active' : '' }}" href="{{ route('items.index', ['item_name' => request('item_name')]) }}">おすすめ</a>
             </li>
-            <li class="product-list-tab__item">
+            <li class=" product-list-tab__item">
                 <a class="item__mylist {{ $tab === 'mylist' ? 'is-active' : '' }}" href="{{ route('items.index', ['tab' => 'mylist', 'item_name' => request('item_name')]) }}">マイリスト</a>
             </li>
         </ul>
     </div>
     <div class="product-list-tab__body">
-        <div class="product-list-tab__content {{ $tab === 'recommendation' ? 'is-active' : '' }}">
+        <div class="product-list-tab__content {{ $tab !== 'mylist' ? 'is-active' : '' }}">
             <div class="product-card__list">
                 @foreach ($items as $item)
                 <a class="product-card__detail-link" href="{{ route('items.detail', ['item_id' => $item->id]) }}">
@@ -37,15 +37,17 @@
         <div class="product-list-tab__content {{ $tab === 'mylist' ? 'is-active' : '' }}">
             <div class="product-card__list">
                 @foreach ($items as $item)
-                <div class="product-card__wrap">
+                <a class="product-card__detail-link" href="{{ route('items.detail', ['item_id' => $item->id]) }}">
                     <div class="product-card__wrap">
-                        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
-                        <p class="product-card__title">{{ $item->item_name }}</p>
-                        @if ($item->purchase)
-                        <span class="product-card__sold-display">Sold</span>
-                        @endif
+                        <div class="product-card__wrap">
+                            <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
+                            <p class="product-card__title">{{ $item->item_name }}</p>
+                            @if ($item->purchase)
+                            <span class="product-card__sold-display">Sold</span>
+                            @endif
+                        </div>
                     </div>
-                </div>
+                </a>
                 @endforeach
             </div>
         </div>
