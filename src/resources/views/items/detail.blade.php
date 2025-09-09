@@ -20,14 +20,23 @@
             <span class="product-introduction__price--symbol">(税込)</span>
         </div>
         <div class="product-introduction__count">
-            <!-- ここがいいね機能になるとすれば、formでmethodPOSTかな？ -->
             <div class="product-introduction__count--likes">
-                <img src="{{ asset('storage/star.png') }}" art="いいね">
-                <span class="product-introduction__count-number">いいねの数</span>
+                <form class="likes-form" method="post" action="{{ route('items.like', ['item_id' => $item->id]) }}">
+                    @csrf
+                    <button class="likes-form__button" type="submit">
+                        <img src="{{ asset('storage/star.png') }}" art="いいね">
+                    </button>
+                    <span class="product-introduction__count-number">{{ $item->likes->count() }}</span>
+                </form>
             </div>
             <div class="product-introduction__count--comments">
-                <img src="{{ asset('storage/speech-bubble.png') }}" art="コメント">
-                <span class="product-introduction__count-number">コメントの数</span>
+                <!-- method,action後で記述 -->
+                <form class="comments-form">
+                    <button class="comments-form__button" type="submit">
+                        <img src="{{ asset('storage/speech-bubble.png') }}" art="コメント">
+                    </button>
+                    <span class="product-introduction__count-number">{{ $item->comments->count() }}</span>
+                </form>
             </div>
         </div>
     </div>
@@ -75,7 +84,7 @@
                     <textarea name="comment_content">{{ old('comment_content') }}</textarea>
                 </div>
                 <div class="new-comment__form-button">
-                    <button class="form-button__submit">コメントを送信する</button>
+                    <button class="form-button__submit" type="submit">コメントを送信する</button>
                 </div>
             </form>
         </div>

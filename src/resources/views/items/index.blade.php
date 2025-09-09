@@ -39,11 +39,11 @@
                 @foreach ($items as $item)
                 <a class="product-card__detail-link" href="{{ route('items.detail', ['item_id' => $item->id]) }}">
                     <div class="product-card__wrap">
-                        <div class="product-card__wrap">
-                            <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
-                            <p class="product-card__title">{{ $item->item_name }}</p>
+                        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
+                        <div class="product-card__text">
+                            <p class="product-card__text--title">{{ $item->item_name }}</p>
                             @if ($item->purchase)
-                            <span class="product-card__sold-display">Sold</span>
+                            <span class="product-card__text--sold-display">Sold</span>
                             @endif
                         </div>
                     </div>

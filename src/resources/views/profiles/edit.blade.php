@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="profile-edit-form__button">
-                <button type="submit" class="profile-edit-form__button--submit">
+                <button class="profile-edit-form__button--submit" type="submit">
                     更新する
                 </button>
             </div>

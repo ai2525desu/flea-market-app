@@ -75,8 +75,16 @@
     text-align: center;
 }
 
-.product-introduction__count--likes img,
-.product-introduction__count--comments img {
+.likes-form__button,
+.comments-form__button {
+    appearance: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}
+
+.likes-form__button img,
+.comments-form__button img {
     width: clamp(20px, 2.5vw, 40px);
     height: auto;
 }

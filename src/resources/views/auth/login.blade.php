@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <div class="login-form__button">
-                    <button type="submit" class="login-form__button--submit">
+                    <button class="login-form__button--submit" type="submit">
                         ログインする
                     </button>
                 </div>

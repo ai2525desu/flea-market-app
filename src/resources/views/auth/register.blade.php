@@ -73,7 +73,7 @@
                 </div>
             </div>
             <div class="register-form__button">
-                <button type="submit" class="register-form__button--submit">
+                <button class="register-form__button--submit" type="submit">
                     登録する
                 </button>
             </div>

@@ -52,7 +52,7 @@
                                 <li class="nav__item">
                                     <form class="logout-form__button" action="/logout" method="post">
                                         @csrf
-                                        <button class="logout-form__button--submit">ログアウト</button>
+                                        <button class="logout-form__button--submit" type="submit">ログアウト</button>
                                     </form>
                                 </li>
                                 <li class="nav__item">

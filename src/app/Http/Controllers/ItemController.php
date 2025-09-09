@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Like;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,9 +39,27 @@ class ItemController extends Controller
     // 商品詳細画面
     public function detail($item_id)
     {
-        $item = Item::with('categories')->findOrFail($item_id);
+        $item = Item::with('categories', 'likes', 'comments')->findOrFail($item_id);
         $condition = Item::CONDITION[$item->condition];
         return view('items.detail', compact('item', 'condition'));
+    }
+
+    public function like($item_id)
+    {
+
+        $user = Auth::user();
+        $like = LIke::where('user_id', $user->id)->where('item_id', $item_id)->first();
+
+        if ($like) {
+            $like->delete();
+        } else {
+            Like::create([
+                'user_id' => $user->id,
+                'item_id' => $item_id
+            ]);
+        }
+
+        return back();
     }
 
     // 商品出品画面

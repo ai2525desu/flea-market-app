@@ -29,6 +29,7 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 
 // 認証ミドルウェアの必要な部分は下記に記述。そうすると自動的に未認証の場合はログイン画面に遷移する
 Route::middleware('auth')->group(function () {
+    Route::post('/item/{item_id}/like', [ItemController::class, 'like'])->name('items.like');
     Route::get('/mypage', [ProfileController::class, 'show'])->name('profiles.show');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profiles.edit');
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
