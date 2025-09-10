@@ -24,24 +24,24 @@
                 <form class="likes-form" method="post" action="{{ route('items.like', ['item_id' => $item->id]) }}">
                     @csrf
                     <button class="likes-form__button  @if($item->likedByCurrentUser()) liked @endif" type="submit" id="likes-button">
-                        <img class="like-icon" src="{{ asset('storage/star.png') }}" art="いいねボタン">
+                        <img class="likes-form__icon" src="{{ asset('storage/star.png') }}" art="いいねボタン">
                     </button>
                     <span class="product-introduction__count-number">{{ $item->likes->count() }}</span>
                 </form>
             </div>
             <div class="product-introduction__count--comments">
-                <!-- method,action後で記述 -->
-                <form class="comments-form">
-                    <button class="comments-form__button" type="submit">
-                        <img class="comment-icon" src="{{ asset('storage/speech-bubble.png') }}" art="コメント">
-                    </button>
-                    <span class="product-introduction__count-number">{{ $item->comments->count() }}</span>
+                <div class="comments__quantity-display" type="submit">
+                    <img class="comments__icon" src="{{ asset('storage/speech-bubble.png') }}" art="コメント">
+                </div>
+                <span class="product-introduction__count-number">{{ $item->comments->count() }}</span>
                 </form>
             </div>
         </div>
     </div>
     <div class="detail-content__screen-transition">
-        <a class="screen-transition__purchase" href="{{ route('purchases.show', ['item_id' => $item->id]) }}">購入手続きへ</a>
+        <a class="screen-transition__purchase {{ $hasPurchase ? 'disabled' : ''}}" @if (!$hasPurchase) href="{{ route('purchases.show', ['item_id' => $item->id]) }}" @endif>
+            購入手続きへ
+        </a>
     </div>
     <div class="detail-content__description">
         <h2 class="detail-content__description-heading">商品説明</h2>
@@ -69,19 +69,35 @@
     <div class="detail-content__comment">
         <h2 class="comment__heading">コメント({{ $item->comments->count() }})</h2>
         <div class="comment__existing-comment">
-            ここにすでにコメントされている内容が表示される
-            ユーザー画像＋名前
-            コメント内容
+            @foreach ($item->comments as $comment)
+            <div class="existing-comment__user-wrap">
+                <div class="existing-comment__user-wrap--image">
+                    <img src="{{  asset('storage/' . $comment->user->profile->image) }}" class="profile-image">
+                </div>
+                <p class="existing-comment__user-wrap--name">
+                    {{ $comment->user->name }}
+                </p>
+            </div>
+            <div class="existing-comment__content">
+                <p class="existing-comment__content--item">
+                    {{ $comment->comment_content }}
+                </p>
+            </div>
+            @endforeach
         </div>
         <div class="comment__new-comment">
-            <!-- action未設定 -->
-            <form class="new-comment__form" action="" method="post" enctype="multipart/form-data" novalidate>
+            <form class="new-comment__form" method="post" action="{{ route('items.comment', ['item_id' => $item->id]) }}" novalidate>
                 @csrf
                 <div class="new-comment__form-title">
                     <label class="new-comment__form-label">商品へのコメント</label>
                 </div>
                 <div class="new-comment__form-content">
                     <textarea name="comment_content">{{ old('comment_content') }}</textarea>
+                </div>
+                <div class="new-comment__form-error">
+                    @error('comment_content')
+                    {{ $message }}
+                    @enderror
                 </div>
                 <div class="new-comment__form-button">
                     <button class="form-button__submit" type="submit">コメントを送信する</button>
