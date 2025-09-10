@@ -23,8 +23,8 @@
             <div class="product-introduction__count--likes">
                 <form class="likes-form" method="post" action="{{ route('items.like', ['item_id' => $item->id]) }}">
                     @csrf
-                    <button class="likes-form__button" type="submit">
-                        <img src="{{ asset('storage/star.png') }}" art="いいね">
+                    <button class="likes-form__button  @if($item->likedByCurrentUser()) liked @endif" type="submit" id="likes-button">
+                        <img class="like-icon" src="{{ asset('storage/star.png') }}" art="いいねボタン">
                     </button>
                     <span class="product-introduction__count-number">{{ $item->likes->count() }}</span>
                 </form>
@@ -33,7 +33,7 @@
                 <!-- method,action後で記述 -->
                 <form class="comments-form">
                     <button class="comments-form__button" type="submit">
-                        <img src="{{ asset('storage/speech-bubble.png') }}" art="コメント">
+                        <img class="comment-icon" src="{{ asset('storage/speech-bubble.png') }}" art="コメント">
                     </button>
                     <span class="product-introduction__count-number">{{ $item->comments->count() }}</span>
                 </form>
@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="detail-content__comment">
-        <h2 class="comment__heading">コメント+count()</h2>
+        <h2 class="comment__heading">コメント({{ $item->comments->count() }})</h2>
         <div class="comment__existing-comment">
             ここにすでにコメントされている内容が表示される
             ユーザー画像＋名前
@@ -90,4 +90,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('likes-button').addEventListener('click', function() {
+        this.classList.toggle('liked');
+    });
+</script>
 @endsection

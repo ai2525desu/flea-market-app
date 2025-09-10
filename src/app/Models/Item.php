@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Purchase;
 use App\Models\Like;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 
 class Item extends Model
 {
@@ -50,6 +51,15 @@ class Item extends Model
     public function likes()
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function likedByCurrentUser()
+    {
+        $user = Auth::user();
+        if (!$user) {
+            return false;
+        }
+        return $this->likes()->where('user_id', $user->id)->exists();
     }
 
     public function comments()

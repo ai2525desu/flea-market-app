@@ -83,11 +83,16 @@
     border: none;
 }
 
-.likes-form__button img,
-.comments-form__button img {
+.like-icon,
+.comment-icon {
     width: clamp(20px, 2.5vw, 40px);
     height: auto;
 }
+
+.liked .like-icon {
+    background-color: #FFFF33;
+}
+
 
 .product-introduction__count-number {
     display: block;
