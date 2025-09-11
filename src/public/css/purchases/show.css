@@ -1,0 +1,13 @@
+.purchase-content__form {
+    max-width: 1400px;
+    margin: 60px auto;
+    display: grid;
+    grid-template-columns: 70% 30%;
+}
+
+@media screen and (max-width:767px) {
+    .purchase-content__form {
+        grid-template-columns: 1fr;
+    }
+
+}
