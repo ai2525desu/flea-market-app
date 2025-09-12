@@ -49,6 +49,10 @@
 
 .product-introduction__brand {
     margin: 0;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     font-size: clamp(14px, 1.7vw, 20px);
 }
 
@@ -142,6 +146,10 @@
 }
 
 .detail-content__description-content {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     font-size: clamp(14px, 1.6vw, 24px);
     color: #000000;
 }
@@ -178,11 +186,19 @@
     margin-right: 10px;
     background-color: #D9D9D9;
     border-radius: 15px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     font-size: clamp(12px, 1.3vw, 20px);
     color: #000000;
 }
 
 .condition__item {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     font-size: clamp(12px, 1.3vw, 20px);
 }
 
@@ -248,6 +264,11 @@
 }
 
 .existing-comment__content--item {
+    margin-left: 5px;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
     font-size: clamp(12px, 1.3vw, 20px);
 }
 

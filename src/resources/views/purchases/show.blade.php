@@ -10,26 +10,34 @@
     <form class="purchase-content__form" method="" action="" novalidate>
         @csrf
         <div class="purchase-content__form-left">
-            <div class="purchase-content__information--product">
-                <div class="product__image">
-                    <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
+            <div class="box-decoration">
+                <div class="purchase-content__information--product">
+                    <div class="product__image">
+                        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
+                    </div>
+                    <div class="product__heading">
+                        <h2 class="product__heading--name">
+                            {{ $item->item_name }}
+                        </h2>
+                        <p class="product__heading--price">
+                            ¥&nbsp;{{ number_format($item->price) }}
+                        </p>
+                    </div>
                 </div>
-                <div class="product__heading">
-                    <h2 class="product__heading--name">
-                        {{ $item->item_name }}
-                    </h2>
-                    <p class="product__heading--price">
-                        ¥&nbsp;{{ number_format($item->price) }}
-                    </p>
-                </div>
+            </div>
+            <div class="box-decoration">
                 <div class="purchase-content__information--payment_method">
-                    <label class="payment_method__heading" for="payment_method">支払い方法</label>
+                    <h2 class="payment_method__heading">
+                        <label for="payment_method">支払い方法</label>
+                    </h2>
                     <select class="payment-method__select" name="payment_method" id="payment_method">
                         <option value="" disabled selected>選択してください</option>
                         <option value="convenience_store">コンビニ支払い</option>
                         <option value="card">カード支払い</option>
                     </select>
                 </div>
+            </div>
+            <div class="box-decoration">
                 <div class="purchase-content__information--shipping-address">
                     <div class="shipping-address__header">
                         <h2 class="shipping-address__heading">
