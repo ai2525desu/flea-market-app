@@ -15,12 +15,19 @@ class PurchaseController extends Controller
         $user = Auth::user()->load('address');
         return view('purchases.show', compact('item', 'user'));
     }
+    // 購入処理
+    public function storePurchase() {}
 
+    // 配送先変更画面
     public function edit($item_id)
     {
         $item = Item::findOrFail($item_id);
         return view('purchases.address', compact('item'));
     }
 
-    public function storePurchase() {}
+    // 配送先変更処理
+    public function update()
+    {
+        // return redirect()->route('purchases.show');
+    }
 }

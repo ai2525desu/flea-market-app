@@ -27,9 +27,17 @@
             </div>
             <div class="box-decoration">
                 <div class="purchase-content__information--payment_method">
-                    <h2 class="payment_method__heading">
-                        <label for="payment_method">支払い方法</label>
-                    </h2>
+                    <div class="payment_method__headinner">
+                        <h2 class="payment_method__heading">
+                            <label for="payment_method">支払い方法</label>
+                        </h2>
+                        <div class="purchase-content__error">
+                            支払い方法を選択してください
+                            @error('payment_method')
+                            {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
                     <div class="payment-method__select">
                         <select name="payment_method" id="payment_method">
                             <option value="" disabled selected>選択してください</option>
@@ -57,6 +65,12 @@
                             {{ $user->address->address }}{{ $user->address->building }}
                         </p>
                     </div>
+                    <div class="purchase-content__error">
+                        配送先を選択してください
+                        @error('shipping_address')
+                        {{ $message }}
+                        @enderror
+                    </div>
                 </div>
             </div>
         </div>
@@ -81,7 +95,7 @@
                         </p>
                     </div>
                     <div class="subtotal__item--right">
-                        <p class="subtotal__content" id="selected-method-text">
+                        <p class="subtotal__content" id="selected-method">
                             選択してください
                         </p>
                     </div>
@@ -99,7 +113,7 @@
 <script>
     document.getElementById('payment_method').addEventListener('change', function() {
         const selectedText = this.options[this.selectedIndex].text;
-        document.getElementById('selected-method-text').textContent = selectedText;
+        document.getElementById('selected-method').textContent = selectedText;
     });
 </script>
 @endsection
