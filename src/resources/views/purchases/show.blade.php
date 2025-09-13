@@ -30,11 +30,13 @@
                     <h2 class="payment_method__heading">
                         <label for="payment_method">支払い方法</label>
                     </h2>
-                    <select class="payment-method__select" name="payment_method" id="payment_method">
-                        <option value="" disabled selected>選択してください</option>
-                        <option value="convenience_store">コンビニ支払い</option>
-                        <option value="card">カード支払い</option>
-                    </select>
+                    <div class="payment-method__select">
+                        <select name="payment_method" id="payment_method">
+                            <option value="" disabled selected>選択してください</option>
+                            <option value="convenience_store">コンビニ支払い</option>
+                            <option value="card">カード支払い</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="box-decoration">
@@ -59,22 +61,30 @@
             </div>
         </div>
         <div class="purchase-content__form-rigth">
-            <div class="purchase-content__confirmation">
-                <div class="confirmation__item">
-                    <p class="confirmation__title">
-                        商品代金
-                    </p>
-                    <p class="confirmation__price">
-                        ¥&nbsp;{{ number_format($item->price) }}
-                    </p>
+            <div class="purchase-content__subtotal">
+                <div class="subtotal__item">
+                    <div class="subtotal__item--left">
+                        <p class="subtotal__title">
+                            商品代金
+                        </p>
+                    </div>
+                    <div class="subtotal__item--right">
+                        <p class="subtotal__content">
+                            ¥&nbsp;{{ number_format($item->price) }}
+                        </p>
+                    </div>
                 </div>
-                <div class="confirmation__item">
-                    <p class="confirmation__title">
-                        支払い方法
-                    </p>
-                    <p class="confirmation__price" id="payment_method-text">
-                        選択してください
-                    </p>
+                <div class="subtotal__item">
+                    <div class="subtotal__item--left">
+                        <p class="subtotal__title">
+                            支払い方法
+                        </p>
+                    </div>
+                    <div class="subtotal__item--right">
+                        <p class="subtotal__content" id="selected-method-text">
+                            選択してください
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="purchase-content__form-button">
@@ -85,4 +95,11 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.getElementById('payment_method').addEventListener('change', function() {
+        const selectedText = this.options[this.selectedIndex].text;
+        document.getElementById('selected-method-text').textContent = selectedText;
+    });
+</script>
 @endsection

@@ -21,4 +21,6 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($item_id);
         return view('purchases.address', compact('item'));
     }
+
+    public function storePurchase() {}
 }
