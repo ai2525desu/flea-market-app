@@ -72,7 +72,9 @@
             @foreach ($item->comments as $comment)
             <div class="existing-comment__user-wrap">
                 <div class="existing-comment__user-wrap--image">
+                    @if(optional($comment->user->profile)->image)
                     <img src="{{  asset('storage/' . $comment->user->profile->image) }}" class="profile-image">
+                    @endif
                 </div>
                 <p class="existing-comment__user-wrap--name">
                     {{ $comment->user->name }}

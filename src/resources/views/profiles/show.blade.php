@@ -43,12 +43,14 @@
                 </div>
             </div>
             <div class="product-tab__content {{ $tab === 'buy' ? 'is-active' : '' }}">
-                <div class="purchase-product-card__wrap">
+                <div class="exhibition-product-card__list">
                     @foreach ($user->purchases as $purchase)
                     @if ($purchase->item)
                     <div class="purchase-product-card__wrap">
-                        <img src="{{ asset('storage/' . $purchase->item->item_image) }}" alt="{{ $purchase->item->item_name }}">
-                        <p class="purchase-card__title">{{ $purchase->item->item_name }}</p>
+                        <div class="purchase-product-card__wrap">
+                            <img src="{{ asset('storage/' . $purchase->item->item_image) }}" alt="{{ $purchase->item->item_name }}">
+                            <p class="purchase-card__title">{{ $purchase->item->item_name }}</p>
+                        </div>
                     </div>
                     @endif
                     @endforeach

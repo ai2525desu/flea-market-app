@@ -44,7 +44,7 @@ class ItemController extends Controller
         $user = Auth::user();
         $item = Item::with('categories', 'likes', 'comments')->findOrFail($item_id);
         $condition = Item::CONDITION[$item->condition];
-        $hasPurchase = $item->purchase()->where('item_id', $item->id)->exists();
+        $hasPurchase = $item->purchase()->exists();
         return view('items.detail', compact('user', 'item', 'condition', 'hasPurchase'));
     }
 

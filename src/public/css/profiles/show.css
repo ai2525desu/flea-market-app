@@ -141,6 +141,32 @@
     color: #000000;
 }
 
+.purchase-product-card__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+}
+
+.purchase-product-card__wrap {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.purchase-product-card__wrap img {
+    width: 100%;
+}
+
+.purchase-card__title {
+    font-family: "Inter",
+        sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+    color: #000000;
+}
+
 
 @media screen and (max-width:850px) {
     .user-information__profile-image {

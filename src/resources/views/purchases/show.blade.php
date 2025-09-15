@@ -6,9 +6,19 @@
 
 @section('content')
 <div class="purchase-content__wrap">
-    <!-- method,actionは後で記述 -->
-    <form class="purchase-content__form" method="" action="" novalidate>
+    <div class="purchase-content__message">
+        @if (session('message'))
+        <div class="purchase-content__success-message">
+            {{ session('message') }}
+        </div>
+        @endif
+    </div>
+    <form class="purchase-content__form" method="post" action="{{ route('purchases.show', ['item_id' => $item->id]) }}" novalidate>
         @csrf
+        <input type="hidden" name="item_id" value="{{ $item->id }}">
+        <input type="hidden" name="shipping_post_code" value="{{ $shipping_post_code }}">
+        <input type="hidden" name="shipping_address" value="{{ $shipping_address }}">
+        <input type="hidden" name="shipping_building" value="{{ $shipping_building }}">
         <div class="purchase-content__form-left">
             <div class="box-decoration">
                 <div class="purchase-content__information--product">
@@ -19,6 +29,9 @@
                         <h2 class="product__heading--name">
                             {{ $item->item_name }}
                         </h2>
+                        @if ($item->purchase)
+                        <span class="product__heading--sold-display">Sold</span>
+                        @endif
                         <p class="product__heading--price">
                             ¥&nbsp;{{ number_format($item->price) }}
                         </p>
@@ -32,7 +45,6 @@
                             <label for="payment_method">支払い方法</label>
                         </h2>
                         <div class="purchase-content__error">
-                            支払い方法を選択してください
                             @error('payment_method')
                             {{ $message }}
                             @enderror
@@ -59,17 +71,16 @@
                     </div>
                     <div class="shipping-address__content">
                         <p class="shipping-address__item">
-                            〒&nbsp;{{ $user->address->post_code }}
+                            〒&nbsp;{{ $shipping_post_code }}
                         </p>
                         <p class="shipping-address__item">
-                            {{ $user->address->address }}{{ $user->address->building }}
+                            {{ $shipping_address }}{{ $shipping_building }}
                         </p>
                     </div>
                     <div class="purchase-content__error">
+                        @if($errors->has('shipping_post_code') || $errors->has('shipping_address'))
                         配送先を選択してください
-                        @error('shipping_address')
-                        {{ $message }}
-                        @enderror
+                        @endif
                     </div>
                 </div>
             </div>
@@ -102,7 +113,7 @@
                 </div>
             </div>
             <div class="purchase-content__form-button">
-                <button type="submit" class="purchase-content__form-button--submit">
+                <button type="submit" class="purchase-content__form-button--submit {{  $isPurchased ? 'disabled' : ''}}">
                     購入する
                 </button>
             </div>

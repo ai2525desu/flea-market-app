@@ -11,6 +11,7 @@
             住所の変更
         </h2>
         <form class="address-form__form" action="{{ route('purchases.address', ['item_id' => $item->id]) }}" method="post" novalidate>
+            @method('patch')
             @csrf
             <div class="address-form__group">
                 <div class="address-form__group--title">

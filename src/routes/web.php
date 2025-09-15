@@ -36,5 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
     Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchase'])->name('purchases.show');
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'storePurchase']);
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchases.address');
+    Route::patch('/purchase/address/{item_id}', [PurchaseController::class, 'update']);
 });

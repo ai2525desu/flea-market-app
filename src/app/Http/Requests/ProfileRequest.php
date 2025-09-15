@@ -45,7 +45,7 @@ class ProfileRequest extends FormRequest
             'name.max' => 'お名前は20文字以内で入力してください',
             'post_code.required' => '郵便番号を入力してください',
             'post_code.regex' => '郵便番号をハイフンありの"123-4567"の形式で入力してください',
-            'address.required' => '郵便番号を入力してください'
+            'address.required' => '住所を入力してください'
         ];
     }
 }
