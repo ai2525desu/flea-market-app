@@ -16,9 +16,9 @@
     <form class="purchase-content__form" method="post" action="{{ route('purchases.show', ['item_id' => $item->id]) }}" novalidate>
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}">
-        <input type="hidden" name="shipping_post_code" value="{{ $shipping_post_code }}">
-        <input type="hidden" name="shipping_address" value="{{ $shipping_address }}">
-        <input type="hidden" name="shipping_building" value="{{ $shipping_building }}">
+        <input type="hidden" name="shipping_post_code" value="shipping_post_code">
+        <input type="hidden" name="shipping_address" value="shipping_address">
+        <input type="hidden" name="shipping_building" value="shipping_building">
         <div class="purchase-content__form-left">
             <div class="box-decoration">
                 <div class="purchase-content__information--product">
@@ -71,10 +71,10 @@
                     </div>
                     <div class="shipping-address__content">
                         <p class="shipping-address__item">
-                            〒&nbsp;{{ $shipping_post_code }}
+                            〒&nbsp;{{ $user->address->post_code }}
                         </p>
                         <p class="shipping-address__item">
-                            {{ $shipping_address }}{{ $shipping_building }}
+                            {{ $user->address->address }}{{ $user->address->building }}
                         </p>
                     </div>
                     <div class="purchase-content__error">
@@ -113,7 +113,7 @@
                 </div>
             </div>
             <div class="purchase-content__form-button">
-                <button type="submit" class="purchase-content__form-button--submit {{  $isPurchased ? 'disabled' : ''}}">
+                <button type="submit" class="purchase-content__form-button--submit {{  $purchase ? 'disabled' : ''}}">
                     購入する
                 </button>
             </div>

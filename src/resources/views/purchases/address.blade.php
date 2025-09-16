@@ -15,45 +15,45 @@
             @csrf
             <div class="address-form__group">
                 <div class="address-form__group--title">
-                    <label for="shipping_post_code" class="address-form__group--label">
+                    <label for="post_code" class="address-form__group--label">
                         郵便番号
                     </label>
                 </div>
                 <div class="address-form__group--content">
-                    <input id="shipping_post_code" type="text" name="shipping_post_code" value="{{ old('shipping_post_code') }}">
+                    <input id="post_code" type="text" name="post_code" value="{{ old('post_code') }}">
                 </div>
                 <div class="address-form__group--error">
-                    @error('shipping_post_code')
+                    @error('post_code')
                     {{ $message }}
                     @enderror
                 </div>
             </div>
             <div class="address-form__group">
                 <div class="address-form__group--title">
-                    <label for="" class="address-form__group--label">
+                    <label for="address" class="address-form__group--label">
                         住所
                     </label>
                 </div>
                 <div class="address-form__group--content">
-                    <input id="shipping_address" type="text" name="shipping_address" value="{{ old('shipping_address') }}">
+                    <input id="address" type="text" name="address" value="{{ old('address') }}">
                 </div>
                 <div class="address-form__group--error">
-                    @error('shipping_address')
+                    @error('address')
                     {{ $message }}
                     @enderror
                 </div>
             </div>
             <div class="address-form__group">
                 <div class="address-form__group--title">
-                    <label for="shipping_building" class="address-form__group--label">
+                    <label for="building" class="address-form__group--label">
                         建物名
                     </label>
                 </div>
                 <div class="address-form__group--content">
-                    <input id="shipping_building" type="text" name="shipping_building" value="{{ old('shipping_building') }}">
+                    <input id="building" type="text" name="building" value="{{ old('building') }}">
                 </div>
                 <div class="address-form__group--error">
-                    @error('shipping_building')
+                    @error('building')
                     {{ $message }}
                     @enderror
                 </div>
