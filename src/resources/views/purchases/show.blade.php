@@ -13,7 +13,7 @@
         </div>
         @endif
     </div>
-    <form class="purchase-content__form" method="post" action="{{ route('purchases.show', ['item_id' => $item->id]) }}" novalidate>
+    <form class="purchase-content__form" method="post" action="{{ route('purchases.stripe', ['item_id' => $item->id]) }}" novalidate>
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}">
         <input type="hidden" name="shipping_post_code" value="shipping_post_code">
@@ -113,7 +113,7 @@
                 </div>
             </div>
             <div class="purchase-content__form-button">
-                <button type="submit" class="purchase-content__form-button--submit {{  $purchase ? 'disabled' : ''}}">
+                <button type="submit" class="purchase-content__form-button--submit {{  $isPurchased ? 'disabled' : ''}}">
                     購入する
                 </button>
             </div>
