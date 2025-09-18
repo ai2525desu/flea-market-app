@@ -7,9 +7,9 @@
 @section('content')
 <div class="purchase-content__wrap">
     <div class="purchase-content__message">
-        @if (session('message'))
+        @if ($isPurchased)
         <div class="purchase-content__success-message">
-            {{ session('message') }}
+            購入が成功しました
         </div>
         @endif
     </div>

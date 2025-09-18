@@ -6,10 +6,12 @@ use App\Http\Requests\AddressRequest;
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Item;
 use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
+use Stripe\Webhook;
 
 class PurchaseController extends Controller
 {
@@ -45,44 +47,23 @@ class PurchaseController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('purchases.store', ['item_id' => $item->id]),
-            // 'success_url' => route('purchases.success', ['item_id' => $item->id]),
+            'success_url' => route('purchases.show', ['item_id' => $item->id]),
             'cancel_url' => route('purchases.show', ['item_id' => $item->id]),
             'metadata' => [
                 'user_id' => $user->id,
                 'item_id' => $item->id,
-                // 追加
                 'payment_method' => $request->input('payment_method')
             ]
         ]);
 
         return redirect($session->url);
     }
-    // Stripeでの決済後にこのURLを呼び出すのは不適切？
 
-    // 購入処理
-    public function storePurchase(Request $request, $item_id)
-    {
-        $user = Auth::user();
-        $item = Item::findOrFail($item_id);
-        $purchase = Purchase::firstOrCreate(
-            ['user_id' => $user->id, 'item_id' => $item->id],
-            [
-                'payment_method' => $request->input('payment_method', 'card'),
-                'shipping_post_code' => $user->address?->post_code,
-                'shipping_address' => $user->address?->address,
-                'shipping_building' => $user->address?->building
-            ]
-        );
-        return redirect()->route('purchases.show', $item->id)->with('message', '購入が成功しました');
-    }
-    // Stripe決済成功後に呼び出される
-    // public function handleSuccess(Request $request, $item_id)
+    // // 購入処理
+    // public function storePurchase(Request $request, $item_id)
     // {
-    //     $item = Item::findOrFail($item_id);
     //     $user = Auth::user();
-
-    //     // すでに購入済みでない場合のみ保存
+    //     $item = Item::findOrFail($item_id);
     //     $purchase = Purchase::firstOrCreate(
     //         ['user_id' => $user->id, 'item_id' => $item->id],
     //         [
@@ -92,11 +73,46 @@ class PurchaseController extends Controller
     //             'shipping_building' => $user->address?->building
     //         ]
     //     );
-
-    //     return redirect()->route('purchases.show', $item->id)
-    //         ->with('message', '購入が成功しました');
+    //     return redirect()->route('purchases.show', $item->id)->with('message', '購入が成功しました');
     // }
 
+    // Webhookを使用してDBにStripe決済完了後のデータをDBへ保存する処理
+    public function storePurchase(Request $request)
+    {
+        $endpoint_secret = config('services.stripe.webhook_secret');
+
+        try {
+            $event = Webhook::constructEvent(
+                $request->getContent(),
+                $request->header('Stripe-Signature'),
+                $endpoint_secret
+            );
+        } catch (\Exception) {
+            return response('Invalid', 400);
+        }
+
+        if ($event->type === 'checkout.session.completed') {
+            $session = $event->data->object;
+            $user = User::find($session->metadata->user_id ?? null);
+            $item = Item::find($session->metadata->item_id ?? null);
+
+            if ($user && $item) {
+                $method = $session->payment_method_types[0] ?? 'card';
+                $method = $method === 'konbini' ? 'convenience_store' : 'card';
+
+                Purchase::firstOrCreate(
+                    ['user_id' => $user->id, 'item_id' => $item->id],
+                    [
+                        'payment_method' => $method,
+                        'shipping_post_code' => $user->address?->post_code,
+                        'shipping_address' => $user->address?->address,
+                        'shipping_building' => $user->address?->building
+                    ]
+                );
+            }
+        }
+        return response('OK', 200);
+    }
 
     // 配送先変更画面
     public function edit($item_id)

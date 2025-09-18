@@ -4,6 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Middleware\Authenticate;
+use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,18 +29,22 @@ Route::post('/register', [AuthController::class, 'store']);
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
-// 認証ミドルウェアの必要な部分は下記に記述。そうすると自動的に未認証の場合はログイン画面に遷移する
+// Webhook受信
+Route::post('/stripe/webhook', [PurchaseController::class, 'storePurchase'])->withoutMiddleware(VerifyCsrfToken::class, Authenticate::class);
+
 Route::middleware('auth')->group(function () {
+
     Route::post('/item/{item_id}/like', [ItemController::class, 'like'])->name('items.like');
     Route::post('/item/{item_id}/comment', [ItemController::class, 'comment'])->name('items.comment');
+
     Route::get('/mypage', [ProfileController::class, 'show'])->name('profiles.show');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profiles.edit');
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
     Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
+
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchase'])->name('purchases.show');
-    Route::get('/purchase/{item_id}/store', [PurchaseController::class, 'storePurchase'])->name('purchases.store');
-    // Route::get('/purchase/{item_id}/success', [PurchaseController::class, 'handleSuccess'])->name('purchases.success');
-    Route::post('/purchase/{item_id}/stripe', [PurchaseController::class, 'transitionToStripe'])->name('purchases.stripe');
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'transitionToStripe'])->name('purchases.stripe');
+
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchases.address');
     Route::patch('/purchase/address/{item_id}', [PurchaseController::class, 'update']);
 });
