@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Item;
 use App\Models\Like;
@@ -81,6 +82,9 @@ class ItemController extends Controller
     // 商品出品画面
     public function showExhibition()
     {
-        return view('items.exhibition');
+        $user = Auth();
+        // $item = Item::with('categories');
+        $categories = Category::all();
+        return view('items.exhibition', compact('user', 'categories'));
     }
 }
