@@ -17,7 +17,7 @@
                     <div class="profile-image__wrap">
                         <div class="profile-image__content">
                             @if ($user->profile?->image)
-                            <img id="old-preview-image" src="{{  asset('storage/' . $user->profile->image) }}">
+                            <img id="old-preview-image" src="{{ asset('storage/' . $user->profile->image) }}">
                             <input type="hidden" name="old_image" value="{{ $user->profile->image }}">
                             @else
                             <img id="new-preview-image" src="#" class="profile-image">
@@ -26,7 +26,6 @@
                         </div>
                         <div class="profile-image__label">
                             <label for="image" class="profile-image__button">画像を選択する</label>
-                            <span id="selected-filename" class="filename-display"></span>
                         </div>
                     </div>
                 </div>
@@ -114,8 +113,6 @@
             }
         }
         reader.readAsDataURL(file);
-
-        document.getElementById('selected-filename').textContent = file.name;
     });
 </script>
 @endsection

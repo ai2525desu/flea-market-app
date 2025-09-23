@@ -55,7 +55,7 @@
             <p class="category__title">カテゴリー</p>
             <div class="category__item-wrap">
                 @foreach ($item->categories as $category)
-                <span class="category__item">{{ $category->category_name }}</span>
+                <span class="category__name">{{ $category->category_name }}</span>
                 @endforeach
             </div>
         </div>
