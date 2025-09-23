@@ -83,8 +83,8 @@ class ItemController extends Controller
     public function showExhibition()
     {
         $user = Auth();
-        // $item = Item::with('categories');
         $categories = Category::all();
-        return view('items.exhibition', compact('user', 'categories'));
+        $conditions = Item::CONDITION;
+        return view('items.exhibition', compact('user', 'categories', 'conditions'));
     }
 }
