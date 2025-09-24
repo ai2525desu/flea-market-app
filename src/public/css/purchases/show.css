@@ -171,6 +171,15 @@
     font-size: clamp(10px, 2vw, 20px);
 }
 
+.shipping-address__notice {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: clamp(10px, 2vw, 20px);
+    color: #FF0000;
+}
+
 .purchase-content__subtotal {
     border: 1px solid #000000;
     margin-bottom: 3rem;

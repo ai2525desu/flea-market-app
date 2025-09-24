@@ -5,9 +5,15 @@
 @endsection
 
 @section('content')
+<div class="exhibition-content__message">
+    @if (session('message'))
+    <div class="exhibition-content__success-message">
+        {{ session('message') }}
+    </div>
+    @endif
+</div>
 <div class="exhibition-content">
-    <!-- method、action後で -->
-    <form class="exhibition-form" method="" action="" enctype="multipart/form-data" novalidate>
+    <form class="exhibition-form" method="post" action="{{ route('items.exhibition') }}" enctype="multipart/form-data" novalidate>
         @csrf
         <h1 class="exhibition-form__heading">
             商品の出品
@@ -17,10 +23,9 @@
                 商品画像
             </span>
             <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('item_image')
+                @error('item_image')
                 {{ $message }}
-                @enderror--}}
+                @enderror
             </span>
             <div class="exhibition-form__item--image">
                 <div class="image__wrap">
@@ -40,10 +45,9 @@
                 カテゴリー
             </span>
             <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('category')
+                @error('categories')
                 {{ $message }}
-                @enderror--}}
+                @enderror
             </span>
             <div class="exhibition-form__item--category">
                 @foreach ($categories as $category)
@@ -60,10 +64,9 @@
                 商品の状態
             </label>
             <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('condition')
+                @error('condition')
                 {{ $message }}
-                @enderror--}}
+                @enderror
             </span>
             <div class="exhibition-form__item">
                 <select name="condition" id="condition">
@@ -71,7 +74,7 @@
                         選択してください
                     </option>
                     @foreach ($conditions as $key=>$condition)
-                    <option value="{{ $key }}">
+                    <option value="{{ $key }}" {{ old('condition') == $key ? 'selected' : '' }}>
                         {{ $condition }}
                     </option>
                     @endforeach
@@ -86,10 +89,9 @@
                 商品名
             </label>
             <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('item_name')
+                @error('item_name')
                 {{ $message }}
-                @enderror--}}
+                @enderror
             </span>
             <div class="exhibition-form__item">
                 <input type="text" name="item_name" id="item_name" value="{{ old('item_name') }}">
@@ -99,12 +101,6 @@
             <label class="exhibition-form__content-title" for="brand">
                 ブランド名
             </label>
-            <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('brand')
-                {{ $message }}
-                @enderror--}}
-            </span>
             <div class="exhibition-form__item">
                 <input type="text" name="brand" id="brand" value="{{ old('brand') }}">
             </div>
@@ -114,10 +110,9 @@
                 商品の説明
             </label>
             <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('description')
+                @error('description')
                 {{ $message }}
-                @enderror--}}
+                @enderror
             </span>
             <div class="exhibition-form__item">
                 <textarea name="description" id="description">
@@ -130,10 +125,9 @@
                 販売価格
             </label>
             <span class="exhibition-form__error">
-                エラーメッセージ
-                {{--@error('price')
+                @error('price')
                 {{ $message }}
-                @enderror--}}
+                @enderror
             </span>
             <div class="exhibition-form__item--price">
                 <input type="text" name="price" id="price" value="{{ old('price') }}">

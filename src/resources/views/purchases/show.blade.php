@@ -70,16 +70,23 @@
                         </a>
                     </div>
                     <div class="shipping-address__content">
+                        <!-- コーチに確認中：住所未登録時にバリデーションエラーが反応せずに購入できてしまうため -->
+                        @if ($user->address)
                         <p class="shipping-address__item">
                             〒&nbsp;{{ $user->address->post_code }}
                         </p>
                         <p class="shipping-address__item">
                             {{ $user->address->address }}{{ $user->address->building }}
                         </p>
+                        @else
+                        <p class="shipping-address__notice">
+                            配送先を設定してください
+                        </p>
+                        @endif
                     </div>
                     <div class="purchase-content__error">
                         @if($errors->has('shipping_post_code') || $errors->has('shipping_address'))
-                        配送先を選択してください
+                        配送先を設定してください
                         @endif
                     </div>
                 </div>

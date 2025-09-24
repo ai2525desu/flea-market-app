@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentRequest;
+use App\Http\Requests\ExhibitionRequest;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Item;
@@ -49,6 +50,7 @@ class ItemController extends Controller
         return view('items.detail', compact('user', 'item', 'condition', 'hasPurchase'));
     }
 
+    // いいね機能
     public function like($item_id)
     {
 
@@ -67,6 +69,7 @@ class ItemController extends Controller
         return back();
     }
 
+    // コメント機能
     public function comment(CommentRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -86,5 +89,31 @@ class ItemController extends Controller
         $categories = Category::all();
         $conditions = Item::CONDITION;
         return view('items.exhibition', compact('user', 'categories', 'conditions'));
+    }
+
+    // 出品機能
+    public function storeExhibition(ExhibitionRequest $request)
+    {
+        if ($request->hasFile('item_image')) {
+            $imagePath = $request->file('item_image')->store('items', 'public');
+        } else {
+            $imagePath = null;
+        }
+
+        $user = Auth::user();
+        $item = Item::create([
+            'user_id' => $user->id,
+            'item_name' => $request->input('item_name'),
+            'item_image' => $imagePath,
+            'brand' => $request->input('brand'),
+            'price' => $request->input('price'),
+            'description' => $request->input('description'),
+            'condition' => $request->input('condition')
+        ]);
+
+        if ($request->has('categories')) {
+            $item->categories()->attach($request->input('categories'));
+        }
+        return redirect(route('items.exhibition'))->with('message', '商品が出品されました');
     }
 }

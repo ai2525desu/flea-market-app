@@ -59,23 +59,6 @@ class PurchaseController extends Controller
         return redirect($session->url);
     }
 
-    // // 購入処理
-    // public function storePurchase(Request $request, $item_id)
-    // {
-    //     $user = Auth::user();
-    //     $item = Item::findOrFail($item_id);
-    //     $purchase = Purchase::firstOrCreate(
-    //         ['user_id' => $user->id, 'item_id' => $item->id],
-    //         [
-    //             'payment_method' => $request->input('payment_method', 'card'),
-    //             'shipping_post_code' => $user->address?->post_code,
-    //             'shipping_address' => $user->address?->address,
-    //             'shipping_building' => $user->address?->building
-    //         ]
-    //     );
-    //     return redirect()->route('purchases.show', $item->id)->with('message', '購入が成功しました');
-    // }
-
     // Webhookを使用してDBにStripe決済完了後のデータをDBへ保存する処理
     public function storePurchase(Request $request)
     {
