@@ -241,7 +241,6 @@
     font-style: normal;
     font-size: clamp(20px, 1.5vw, 26px);
     color: #FFFFFF;
-
 }
 
 .purchase-content__form-button--submit.disabled {
