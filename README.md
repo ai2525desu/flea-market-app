@@ -47,13 +47,13 @@
     STRIPE_SECRET=sk_test_****
     STRIPE_WEBHOOK_SECRET=whsec_*******
     ```
-5. アプリケーションキーの作成
+5. アプリケーションキーの作成<br>
     ``` php artisan key:generate ```
-6. src/storage/app/publicのディレクトリ下に保存してある画像を使用するために、シンボリックリンク作成
+6. src/storage/app/publicのディレクトリ下に保存してある画像を使用するために、シンボリックリンク作成<br>
     ``` php artisan storage:link ```
-7. テーブルデータ反映のためにマイグレーションの実行
+7. テーブルデータ反映のためにマイグレーションの実行<br>
     ``` php artisan migrate ```
-8. ダミーデータ反映のためにシーディング実行
+8. ダミーデータ反映のためにシーディング実行<br>
     ``` php artisan db:seed ```
 
 **使用するマイグレーションファイル一覧**
@@ -95,8 +95,10 @@
 <!-- StripeCLIを使用したWebhookの秘密鍵の取得等についてコーチに確認中 -->
 1. Stripe CLIによってWebhookと接続状態にする
     - **コンテナの再起動時やLaravelサーバーの再起動時には毎回この手順が必要**
-    - Stripeにログイン:``` stripe login ```
-    - Webhookに接続:``` stripe listen --forward-to http://localhost/stripe/webhook ```
+    - Stripeにログイン<br>
+        ``` stripe login ```
+    - Webhookに接続<br>
+        ``` stripe listen --forward-to http://localhost/stripe/webhook ```
 2. 商品購入画面より、購入するをクリック
     - Stripe決済画面に遷移する
 3. 決済画面でテストカード番号を入力
