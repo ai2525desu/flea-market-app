@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -31,10 +32,26 @@ Route::post('/register', [AuthController::class, 'store']);
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
+// メール認証
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+// メール送信
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->SendEmailVerificationNotification();
+    return back()->with('message', '認証メールを送信しました');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// メール内での認証リンク処理
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('profiles.edit');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
 // Webhook受信
 Route::post('/stripe/webhook', [PurchaseController::class, 'storePurchase'])->withoutMiddleware(VerifyCsrfToken::class, Authenticate::class);
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/item/{item_id}/like', [ItemController::class, 'like'])->name('items.like');
     Route::post('/item/{item_id}/comment', [ItemController::class, 'comment'])->name('items.comment');

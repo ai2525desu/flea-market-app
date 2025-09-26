@@ -26,7 +26,11 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('profiles.edit');
+        // メール認証機能実装前
+        // return redirect()->route('profiles.edit');
+
+        // メール認証機能実装後
+        return redirect()->route('verification.notice');
     }
 
 
