@@ -32,12 +32,14 @@ Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
 // メール認証
-// Route::get('/email/verify', function () {
-//     return view('auth.verify-email');
-// })->middleware('auth')->name('verification.notice');
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
-})->name('verification.notice');
+})->middleware('auth')->name('verification.notice');
+
+// ログイン時にメール認証を行っていないとログインできない状態にしたいが、できていない
+// Route::get('/email/verify', function () {
+//     return view('auth.verify-email');
+// })->name('verification.notice');
 // メール送信
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->SendEmailVerificationNotification();
