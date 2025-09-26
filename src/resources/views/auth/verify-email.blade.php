@@ -8,7 +8,6 @@
 <div class="verify-email-content__send-message">
     {{--@if (session('message'))--}}
     <div class="verify-email-content__send-message--success">
-        認証メールを送信しました
         {{ session('message') }}
     </div>
     {{--@endif--}}
@@ -20,7 +19,6 @@
             メール認証を完了してください。
         </p>
     </div>
-    <!--  -->
     <form class="verify-email-content__form" method="post" action="{{ route('verification.send') }}">
         @csrf
         <div class="verify-email-content__form--first-send-button">
