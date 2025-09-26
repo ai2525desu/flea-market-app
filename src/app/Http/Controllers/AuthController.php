@@ -26,10 +26,6 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        // メール認証機能実装前
-        // return redirect()->route('profiles.edit');
-
-        // メール認証機能実装後
         return redirect()->route('verification.notice');
     }
 
@@ -39,11 +35,31 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    // public function authenticate(LoginRequest $request)
+    // {
+    //     $user = $request->only('email', 'password');
+
+    //     if (Auth::attempt($user)) {
+    //         $request->session()->regenerate();
+    //         return redirect()->route('items.index');
+    //     } else {
+    //         return back()->with('errorMessage', 'ログイン情報が登録されていません。');
+    //     }
+    // }
+
     public function authenticate(LoginRequest $request)
     {
-        $user = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
-        if (Auth::attempt($user)) {
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
+            // メール認証済みかチェック
+            if (!$user->hasVerifiedEmail()) {
+                Auth::logout(); // ログイン状態を解除
+                return redirect()->route('verification.notice')->with('errorMessage', 'メール認証が完了していません。メールを確認してください。');
+            }
+
             $request->session()->regenerate();
             return redirect()->route('items.index');
         } else {
