@@ -9,6 +9,7 @@ use App\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use Illuminate\Http\Request;
 |
 */
 
-
+// 未承認ユーザー閲覧可能
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/item/{item_id}', [ItemController::class, 'detail'])->name('items.detail');
 
@@ -31,22 +32,14 @@ Route::post('/register', [AuthController::class, 'store']);
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
-// メール認証
+// メール認証関連
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
-
-// ログイン時にメール認証を行っていないとログインできない状態にしたいが、できていない
-// Route::get('/email/verify', function () {
-//     return view('auth.verify-email');
-// })->name('verification.notice');
-// メール送信
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->SendEmailVerificationNotification();
     return back()->with('message', '認証メールを送信しました');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-// メール内での認証リンク処理
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
     return redirect()->route('profiles.edit');
@@ -55,6 +48,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 // Webhook受信
 Route::post('/stripe/webhook', [PurchaseController::class, 'storePurchase'])->withoutMiddleware(VerifyCsrfToken::class, Authenticate::class);
 
+// ユーザー認証後閲覧可能
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::post('/item/{item_id}/like', [ItemController::class, 'like'])->name('items.like');

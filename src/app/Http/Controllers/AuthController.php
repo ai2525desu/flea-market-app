@@ -35,19 +35,6 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // public function authenticate(LoginRequest $request)
-    // {
-    //     $user = $request->only('email', 'password');
-
-    //     if (Auth::attempt($user)) {
-    //         $request->session()->regenerate();
-    //         return redirect()->route('items.index');
-    //     } else {
-    //         return back()->with('errorMessage', 'ログイン情報が登録されていません。');
-    //     }
-    // }
-
-
     public function authenticate(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
@@ -55,9 +42,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            // メール認証済みかチェック
             if (!$user->hasVerifiedEmail()) {
-                Auth::logout(); // ログイン状態を解除
                 return redirect()->route('verification.notice')->with('errorMessage', 'メール認証が完了していません。メールを確認してください。');
             }
 
