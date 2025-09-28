@@ -38,7 +38,7 @@ Route::get('/email/verify', function () {
 })->middleware('auth')->name('verification.notice');
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->SendEmailVerificationNotification();
-    return back()->with('message', '認証メールを送信しました');
+    return back()->with('message', '認証メールを再送しました');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();

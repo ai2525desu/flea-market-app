@@ -45,6 +45,12 @@ class ProfileController extends Controller
             ]
         );
 
+        // $user()->update(
+        //     [
+        //         'name' => $request->name,
+        //     ]
+        // );
+
         $user->address()->updateOrCreate(
             [],
             [

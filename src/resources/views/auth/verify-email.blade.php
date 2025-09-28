@@ -24,13 +24,13 @@
             メール認証を完了してください。
         </p>
     </div>
+    <div class="verify-email-content__form--first-send-button">
+        <a class="first-send-button__submit" href="http://localhost:8025/">
+            認証はこちらから
+        </a>
+    </div>
     <form class="verify-email-content__form" method="post" action="{{ route('verification.send') }}">
         @csrf
-        <div class="verify-email-content__form--first-send-button">
-            <button class="first-send-button__submit" type="submit">
-                認証はこちらから
-            </button>
-        </div>
         <div class="verify-email-content__form--resend-email-button">
             <button class="resend-email-button__submit" type="submit">
                 認証メールを再送する

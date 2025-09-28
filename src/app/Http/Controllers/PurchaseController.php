@@ -52,14 +52,31 @@ class PurchaseController extends Controller
             'metadata' => [
                 'user_id' => $user->id,
                 'item_id' => $item->id,
-                'payment_method' => $request->input('payment_method')
+                'payment_method' => $request->input('payment_method'),
+                'shipping_post_code' => $request->input('shipping_post_code'),
+                'shipping_address' => $request->input('shipping_address'),
+                'shipping_building' => $request->input('shipping_building')
             ]
         ]);
+
+        // Stripeに$purchaseを登録して実装する
+        if ($session->url == $session->success_url) {
+            $purchase = Purchase::create([
+                'user_id' => $request->input('user_id'),
+                'item_id' => $request->input('item_id'),
+                'payment_method' => $request->input('payment_method'),
+                'shipping_post_code' => $request->input('shipping_post_code'),
+                'shipping_address' => $request->input('shipping_address'),
+                'shipping_building' => $request->input('shipping_building')
+            ]);
+        }
+
 
         return redirect($session->url);
     }
 
     // Webhookを使用してDBにStripe決済完了後のデータをDBへ保存する処理
+    // コンビニ決済の時にはWebhookを使用してＤＢに登録処理
     public function storePurchase(Request $request)
     {
         $endpoint_secret = config('services.stripe.webhook_secret');
@@ -109,11 +126,14 @@ class PurchaseController extends Controller
     {
         $user = Auth::user();
         $item = Item::findOrFail($item_id);
-        $user->address()->update([
-            'post_code' => $request->input('post_code'),
-            'address' => $request->input('address'),
-            'building' => $request->input('building')
-        ]);
+        $user->address()->updateOrCreate(
+            [],
+            [
+                'post_code' => $request->input('post_code'),
+                'address' => $request->input('address'),
+                'building' => $request->input('building')
+            ]
+        );
 
         return redirect()->route('purchases.show', $item->id)->with('message', '配送先の変更が完了しました');
     }

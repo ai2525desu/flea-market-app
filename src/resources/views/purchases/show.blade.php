@@ -16,9 +16,9 @@
     <form class="purchase-content__form" method="post" action="{{ route('purchases.stripe', ['item_id' => $item->id]) }}" novalidate>
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}">
-        <input type="hidden" name="shipping_post_code" value="shipping_post_code">
-        <input type="hidden" name="shipping_address" value="shipping_address">
-        <input type="hidden" name="shipping_building" value="shipping_building">
+        <input type="hidden" name="shipping_post_code" value="{{ $user->address->post_code }}">
+        <input type="hidden" name="shipping_address" value="{{ $user->address->address }}">
+        <input type="hidden" name="shipping_building" value="{{ $user->address->building }}">
         <div class="purchase-content__form-left">
             <div class="box-decoration">
                 <div class="purchase-content__information--product">
@@ -80,7 +80,7 @@
                         </p>
                         @else
                         <p class="shipping-address__notice">
-                            配送先を設定してください
+                            配送先の登録がありません
                         </p>
                         @endif
                     </div>
