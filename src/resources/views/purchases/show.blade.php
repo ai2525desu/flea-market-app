@@ -16,9 +16,9 @@
     <form class="purchase-content__form" method="post" action="{{ route('purchases.stripe', ['item_id' => $item->id]) }}" novalidate>
         @csrf
         <input type="hidden" name="item_id" value="{{ $item->id }}">
-        <input type="hidden" name="shipping_post_code" value="{{ $user->address->post_code }}">
-        <input type="hidden" name="shipping_address" value="{{ $user->address->address }}">
-        <input type="hidden" name="shipping_building" value="{{ $user->address->building }}">
+        <input type="hidden" name="shipping_post_code" value="{{ $user->address?->post_code }}">
+        <input type="hidden" name="shipping_address" value="{{ $user->address?->address }}">
+        <input type="hidden" name="shipping_building" value="{{ $user->address?->building }}">
         <div class="purchase-content__form-left">
             <div class="box-decoration">
                 <div class="purchase-content__information--product">
@@ -70,7 +70,6 @@
                         </a>
                     </div>
                     <div class="shipping-address__content">
-                        <!-- コーチに確認中：住所未登録時にバリデーションエラーが反応せずに購入できてしまうため -->
                         @if ($user->address)
                         <p class="shipping-address__item">
                             〒&nbsp;{{ $user->address->post_code }}

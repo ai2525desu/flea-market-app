@@ -46,7 +46,7 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // Webhook受信
-Route::post('/stripe/webhook', [PurchaseController::class, 'storePurchase'])->withoutMiddleware(VerifyCsrfToken::class, Authenticate::class);
+Route::post('/stripe/webhook', [PurchaseController::class, 'storeConveniencePurchase'])->withoutMiddleware([VerifyCsrfToken::class, Authenticate::class]);
 
 // ユーザー認証後閲覧可能
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -62,6 +62,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'showPurchase'])->name('purchases.show');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'transitionToStripe'])->name('purchases.stripe');
+    Route::get('/purchase/success/{item_id}', [PurchaseController::class, 'storeCardPurchase'])->name('purchases.card.success');
 
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('purchases.address');
     Route::patch('/purchase/address/{item_id}', [PurchaseController::class, 'update']);

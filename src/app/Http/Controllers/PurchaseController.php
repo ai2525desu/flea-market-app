@@ -47,7 +47,7 @@ class PurchaseController extends Controller
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => route('purchases.show', ['item_id' => $item->id]),
+            'success_url' => route('purchases.card.success', ['item_id' => $item->id]),
             'cancel_url' => route('purchases.show', ['item_id' => $item->id]),
             'metadata' => [
                 'user_id' => $user->id,
@@ -55,29 +55,76 @@ class PurchaseController extends Controller
                 'payment_method' => $request->input('payment_method'),
                 'shipping_post_code' => $request->input('shipping_post_code'),
                 'shipping_address' => $request->input('shipping_address'),
-                'shipping_building' => $request->input('shipping_building')
+                'shipping_building' => $request?->input('shipping_building')
             ]
         ]);
-
-        // Stripeに$purchaseを登録して実装する
-        if ($session->url == $session->success_url) {
-            $purchase = Purchase::create([
-                'user_id' => $request->input('user_id'),
-                'item_id' => $request->input('item_id'),
-                'payment_method' => $request->input('payment_method'),
-                'shipping_post_code' => $request->input('shipping_post_code'),
-                'shipping_address' => $request->input('shipping_address'),
-                'shipping_building' => $request->input('shipping_building')
-            ]);
-        }
-
 
         return redirect($session->url);
     }
 
-    // Webhookを使用してDBにStripe決済完了後のデータをDBへ保存する処理
-    // コンビニ決済の時にはWebhookを使用してＤＢに登録処理
-    public function storePurchase(Request $request)
+    // カード決済が成功し、リダイレクトされる場合のアクション
+    public function storeCardPurchase(Request $request, $item_id)
+    {
+        $user = Auth::user();
+        $item = Item::findOrFail($item_id);
+
+        $purchase = Purchase::firstOrCreate(
+            ['user_id' => $user->id, 'item_id' => $item->id],
+            [
+                'payment_method' => 'card',
+                'shipping_post_code' => $user->address?->post_code,
+                'shipping_address' => $user->address?->address,
+                'shipping_building' => $user->address?->building
+            ]
+        );
+
+        return redirect()->route('purchases.show', $item->id);
+    }
+
+    // コンビニ決済完了時にWebhookを使用してDBにStripe決済完了後のデータをDBへ保存する処理
+    // public function storeConveniencePurchase(Request $request)
+    // {
+    //     $endpoint_secret = config('services.stripe.webhook_secret');
+
+    //     try {
+    //         $event = Webhook::constructEvent(
+    //             $request->getContent(),
+    //             $request->header('Stripe-Signature'),
+    //             $endpoint_secret
+    //         );
+    //     } catch (\Exception) {
+    //         return response('Invalid', 400);
+    //     }
+
+    //     if ($event->type === 'checkout.session.completed') {
+    //         $session = $event->data->object;
+    //         $user = User::find($session->metadata->user_id ?? null);
+    //         $item = Item::find($session->metadata->item_id ?? null);
+
+    //         if ($user && $item) {
+    //             // $method = $session->payment_method_types[0] ?? 'card';
+    //             // $method = $method === 'konbini' ? 'convenience_store' : $method;
+
+    //             $method = $session->payment_method_types[0] ?? 'null';
+    //             if ($method === 'konbini') {
+    //                 Purchase::firstOrCreate(
+    //                     ['user_id' => $user->id, 'item_id' => $item->id],
+    //                     [
+    //                         'payment_method' => $method,
+    //                         'shipping_post_code' => $session->metadata->shipping_post_code ?? '',
+    //                         'shipping_address' => $session->metadata->shipping_address ?? '',
+    //                         'shipping_building' => $session->metadata->shipping_building?? '',
+    //                     ]
+    //                 );
+    //             }
+    //         }
+    //     }
+    //     return response('OK', 200);
+    // }
+
+    // コンビニ決済完了時の Webhook
+    // コンビニ決済完了時の Webhook
+    public function storeConveniencePurchase(Request $request)
     {
         $endpoint_secret = config('services.stripe.webhook_secret');
 
@@ -87,32 +134,70 @@ class PurchaseController extends Controller
                 $request->header('Stripe-Signature'),
                 $endpoint_secret
             );
-        } catch (\Exception) {
-            return response('Invalid', 400);
+        } catch (\Exception $e) {
+            // \Log::error('Stripe Webhook signature verification failed', ['error' => $e->getMessage()]);
+            return response('Invalid signature', 400);
         }
 
-        if ($event->type === 'checkout.session.completed') {
+        // コンビニ決済は非同期なので両方のイベントを確認
+        $validEvents = [
+            'checkout.session.completed',
+            'checkout.session.async_payment_succeeded'
+        ];
+
+        if (in_array($event->type, $validEvents)) {
             $session = $event->data->object;
-            $user = User::find($session->metadata->user_id ?? null);
-            $item = Item::find($session->metadata->item_id ?? null);
 
-            if ($user && $item) {
-                $method = $session->payment_method_types[0] ?? 'card';
-                $method = $method === 'konbini' ? 'convenience_store' : 'card';
+            // \Log::info('Stripe Webhook received', [
+            //     'event_type' => $event->type,
+            //     'session_id' => $session->id,
+            //     'metadata'   => $session->metadata ?? null
+            // ]);
 
-                Purchase::firstOrCreate(
-                    ['user_id' => $user->id, 'item_id' => $item->id],
-                    [
-                        'payment_method' => $method,
-                        'shipping_post_code' => $user->address?->post_code,
-                        'shipping_address' => $user->address?->address,
-                        'shipping_building' => $user->address?->building
-                    ]
-                );
+            // metadata の確認
+            $userId = $session->metadata->user_id ?? null;
+            $itemId = $session->metadata->item_id ?? null;
+
+            if (!$userId || !$itemId) {
+                // \Log::error('Webhook missing metadata', ['session' => $session]);
+                return response('Missing metadata', 400);
             }
+
+            $user = User::find($userId);
+            $item = Item::find($itemId);
+
+            if (!$user || !$item) {
+                // \Log::error('Webhook invalid user or item', ['user_id' => $userId, 'item_id' => $itemId]);
+                return response('Invalid user or item', 400);
+            }
+
+            // 支払い方法を確認（konbini の場合のみ処理）
+            $method = $session->payment_method_types[0] ?? '';
+            if ($method !== 'konbini') {
+                // \Log::info('Webhook received, but not konbini', ['method' => $method]);
+                return response('Not konbini', 200);
+            }
+
+            // DB 保存
+            Purchase::firstOrCreate(
+                ['user_id' => $user->id, 'item_id' => $item->id],
+                [
+                    'payment_method'     => 'convenience_store',
+                    'shipping_post_code' => $session->metadata->shipping_post_code ?? '',
+                    'shipping_address'   => $session->metadata->shipping_address ?? '',
+                    'shipping_building'  => $session->metadata->shipping_building ?? null,
+                ]
+            );
+
+            // \Log::info('Purchase created for konbini payment', [
+            //     'user_id' => $user->id,
+            //     'item_id' => $item->id
+            // ]);
         }
+
         return response('OK', 200);
     }
+
 
     // 配送先変更画面
     public function edit($item_id)
