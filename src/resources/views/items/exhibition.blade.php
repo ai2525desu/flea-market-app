@@ -151,12 +151,6 @@
             const preview = document.getElementById('preview-image');
             preview.src = e.target.result;
             preview.style.display = 'block';
-
-            preview.onload = function() {
-                const wrap = document.querySelector('.exhibition-form__item--image');
-                const maxHeight = 400;
-                wrap.style.height = Math.min(preview.naturalHeight, maxHeight) + 'px';
-            };
         }
         reader.readAsDataURL(file);
     });
