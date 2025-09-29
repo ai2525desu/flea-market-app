@@ -23,8 +23,12 @@
             <div class="product-introduction__count--likes">
                 <form class="likes-form" method="post" action="{{ route('items.like', ['item_id' => $item->id]) }}">
                     @csrf
-                    <button class="likes-form__button  @if($item->likedByCurrentUser()) liked @endif" type="submit" id="likes-button">
-                        <img class="likes-form__icon" src="{{ asset('storage/star.png') }}" art="いいねボタン">
+                    <button class="likes-form__button" type="submit">
+                        @if($item->likedByCurrentUser())
+                        <img class="likes-form__icon--no-color" src="{{ asset('storage/yellow-star.png') }}" alt="いいね済み">
+                        @else
+                        <img class="likes-form__icon--colored" src="{{ asset('storage/star.png') }}" alt="いいねボタン">
+                        @endif
                     </button>
                     <span class="product-introduction__count-number">{{ $item->likes->count() }}</span>
                 </form>
@@ -108,10 +112,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.getElementById('likes-button').addEventListener('click', function() {
-        this.classList.toggle('liked');
-    });
-</script>
 @endsection
