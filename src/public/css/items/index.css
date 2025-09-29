@@ -65,7 +65,7 @@
 
 .product-card__wrap {
     width: 100%;
-    max-width: 260px;
+    max-width: 200px;
     height: auto;
     object-fit: cover;
 }

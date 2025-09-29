@@ -18,21 +18,21 @@
     </div>
     <div class="product-list-tab__body">
         <div class="product-list-tab__content {{ $tab !== 'mylist' ? 'is-active' : '' }}">
-            <div class="product-card__list">
-                @foreach ($items as $item)
-                <a class="product-card__detail-link" href="{{ route('items.detail', ['item_id' => $item->id]) }}">
-                    <div class="product-card__wrap">
-                        <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
-                        <div class="product-card__text">
-                            <p class="product-card__text--title">{{ $item->item_name }}</p>
-                            @if ($item->purchase)
-                            <span class="product-card__text--sold-display">Sold</span>
-                            @endif
+                <div class="product-card__list">
+                    @foreach ($items as $item)
+                    <a class="product-card__detail-link" href="{{ route('items.detail', ['item_id' => $item->id]) }}">
+                        <div class="product-card__wrap">
+                            <img src="{{ asset('storage/' . $item->item_image) }}" alt="{{ $item->item_name }}">
+                            <div class="product-card__text">
+                                <p class="product-card__text--title">{{ $item->item_name }}</p>
+                                @if ($item->purchase)
+                                <span class="product-card__text--sold-display">Sold</span>
+                                @endif
+                            </div>
                         </div>
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                    </a>
+                    @endforeach
+                </div>
         </div>
         <div class="product-list-tab__content {{ $tab === 'mylist' ? 'is-active' : '' }}">
             <div class="product-card__list">
