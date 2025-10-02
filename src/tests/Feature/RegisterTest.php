@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use PhpParser\Node\Expr\PostDec;
 use Tests\TestCase;
 
 class RegisterTest extends TestCase
@@ -14,6 +12,9 @@ class RegisterTest extends TestCase
      *
      * @return void
      */
+
+    
+    use RefreshDatabase;
 
     // 会員登録画面表示メソッド
     public function getRegisterPage()
@@ -34,6 +35,9 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['name']);
+
+        $errors = session('errors')->getBag('default');
+        $this->assertEquals('お名前を入力してください', $errors->first('name'));
     }
 
 
@@ -50,6 +54,9 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['email']);
+
+        $errors = session('errors')->getBag('default');
+        $this->assertEquals('メールアドレスを入力してください', $errors->first('email'));
     }
 
 
@@ -66,6 +73,10 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['password', 'password_confirmation']);
+
+        $errors = session('errors')->getBag('default');
+        $this->assertEquals('パスワードを入力してください', $errors->first('password'));
+        $this->assertEquals('確認用パスワードを入力してください', $errors->first('password_confirmation'));
     }
 
 
@@ -82,6 +93,10 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['password', 'password_confirmation']);
+
+        $errors = session('errors')->getBag('default');
+        $this->assertEquals('パスワードは8文字以上で入力してください', $errors->first('password'));
+        $this->assertEquals('確認用パスワードは8文字以上で入力してください', $errors->first('password_confirmation'));
     }
 
 
@@ -98,5 +113,8 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors(['password_confirmation']);
+
+        $errors = session('errors')->getBag('default');
+        $this->assertEquals('パスワードと一致しません', $errors->first('password_confirmation'));
     }
 }
