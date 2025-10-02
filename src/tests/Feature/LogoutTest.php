@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class LogoutTest extends TestCase
@@ -13,10 +13,16 @@ class LogoutTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
-    {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
+    use RefreshDatabase;
+
+    // ログアウトの確認
+    public function test_logout()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $response = $this->post('/logout');
+        $response->assertRedirect('/');
+        $this->assertGuest();
     }
 }
