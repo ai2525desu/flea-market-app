@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Item;
-use GuzzleHttp\Psr7\UploadedFile;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
@@ -22,33 +22,93 @@ class ItemListTest extends TestCase
     use RefreshDatabase;
 
     protected $items;
+    protected $loginUser;
 
-    protected function setUp(): void
+    public function __construct($name = null)
+    {
+        parent::__construct($name);
+
+        $this->loginUser = new User([
+            'id' => 1,
+            'name' => 'テストユーザー',
+        ]);
+
+        $this->items = collect([
+            new Item([
+                'id' => 1,
+                'item_name' => 'テスト商品1',
+                'item_image' => 'dummy1.jpg',
+                'seller_id' => 2,
+                'buyer_id' => null, // 未購入
+            ]),
+            new Item([
+                'id' => 2,
+                'item_name' => 'テスト商品2',
+                'item_image' => 'dummy2.jpg',
+                'seller_id' => 3,
+                'buyer_id' => 5,
+            ]),
+            new Item([
+                'id' => 3,
+                'item_name' => '自分の商品',
+                'item_image' => 'dummy3.jpg',
+                'seller_id' => 1, // ログインユーザーが出品中
+                'buyer_id' => null,
+            ]),
+        ]);
+    }
+
+    // 商品一覧画面表示メソッド
+    public function getIndexPage()
+    {
+        return $this->get('/')->assertStatus(200);
+    }
+
+    // 商品一覧の取得
+    public function test_get_product_information()
+    {
+        $response = $this->getIndexPage();
+        Storage::fake('public/items');
+
+        foreach ($this->items as $item) {
+            $response->assertSee($item->item_name);
+            Storage::disk('public')->put('items/' . $item->item_image, 'dummy_content');
+            $this->assertTrue(
+                Storage::disk('public')->exists('items/' . $item->item_image),
+                "ファイル「items/{$item->item_image}」が存在しません"
+            );
+            $response->assertSee("storage/items/{$item->item_image}");
+        }
+    }
+
+
+    /*protected function setUp(): void
     {
         parent::setUp();
 
         Storage::fake('public');
 
-        // Itemモデルにインスタンスを作成してDBに保存せずに進める方法
-        // $dummyImages = ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg',];
-        // foreach ($dummyImages as $filename) {
-        //     Storage::disk('public')->put('items/' . $filename, 'dummy_content');
-        // }
-        // ここでテスト商品１が実際のＢｌａｄｅファイル上に明記がないことが問題になている
-        // $this->items = collect([
-        //     new Item(['item_name' => 'テスト商品1', 'item_image' => 'dummy1.jpg']),
-        //     new Item(['item_name' => 'テスト商品2', 'item_image' => 'dummy2.jpg']),
-        //     new Item(['item_name' => 'テスト商品3', 'item_image' => 'dummy3.jpg']),
-        // ]);
+        Itemモデルにインスタンスを作成してDBに保存せずに進める方法
+        $dummyImages = ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg',];
+        foreach ($dummyImages as $filename) {
+            Storage::disk('public')->put('items/' . $filename, 'dummy_content');
+        }
+        ここでテスト商品１が実際のＢｌａｄｅファイル上に明記がないことが問題になている
+        $this->items = collect([
+            new Item(['item_name' => 'テスト商品1', 'item_image' => 'dummy1.jpg']),
+            new Item(['item_name' => 'テスト商品2', 'item_image' => 'dummy2.jpg']),
+            new Item(['item_name' => 'テスト商品3', 'item_image' => 'dummy3.jpg']),
+        ]);
 
 
-        // この書き方ではItemFactoryが必須になってしまうので__constructメソッドでFactoryを使用しない書き方が有用かと思われる
-        // Storage::disk('public')->put('items/dummy.jpg', 'dummy_content');
-        // $this->items = Item::factory()->count(10)->create([
-        //     'item_name' => 'テスト商品',
-        //     'item_image' => 'dummy.jpg'
-        // ]);
+        この書き方ではItemFactoryが必須になってしまうので__constructメソッドでFactoryを使用しない書き方が有用かと思われる
+        Storage::disk('public')->put('items/dummy.jpg', 'dummy_content');
+        $this->items = Item::factory()->count(10)->create([
+            'item_name' => 'テスト商品',
+            'item_image' => 'dummy.jpg'
+        ]);
     }
+
 
     // 商品一覧画面表示メソッド
     public function getIndexPage()
@@ -70,5 +130,5 @@ class ItemListTest extends TestCase
             );
             $response->assertSee("storage/items/{$item->item_image}");
         }
-    }
+    }*/
 }
