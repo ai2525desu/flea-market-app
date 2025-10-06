@@ -8,7 +8,7 @@ use Tests\TestCase;
 class RegisterTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * 会員登録に関するテスト
      *
      * @return void
      */
