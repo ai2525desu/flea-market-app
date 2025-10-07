@@ -19,13 +19,16 @@ class ItemListTest extends TestCase
      * @return void
      */
 
+    // トレイトという下記の記述方法
     use RefreshDatabase;
 
     protected $items;
     protected $loginUser;
 
-    public function __construct($name = null)
+    // コンストラクタは使用推奨されていないので、setUpメソッドにてダミーデータを取得し、それを繰り返してすとないぶで使用すること
+    /*public function __construct($name = null)
     {
+        // TastCaseに定義されているコンストラクタを実行してください。なので、
         parent::__construct($name);
 
         $this->loginUser = new User([
@@ -56,15 +59,18 @@ class ItemListTest extends TestCase
                 'buyer_id' => null,
             ]),
         ]);
-    }
+        }*/
 
+    // この程度ならあえてめそっど記述しなくてよし。せれぞれのところで記述すること
     // 商品一覧画面表示メソッド
-    public function getIndexPage()
-    {
-        return $this->get('/')->assertStatus(200);
-    }
+    // public function getIndexPage()
+    // {
+    //     return $this->get('/')->assertStatus(200);
+    // }
 
     // 商品一覧の取得
+    // 取得については、ダミーデータをsetUpメソッドに入れて取得しておけば、このテスト前にsetUpのメソッドが呼び出されるので、ただ$tresponseで返せばビューの内容も表示されるので問題なくできる
+    // Storageにおける画像の保存状態についてはこの部分のテストでは不要なのでOK
     public function test_get_product_information()
     {
         $response = $this->getIndexPage();
