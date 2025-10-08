@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\Item;
+use App\Models\Purchase;
 use App\Models\User;
+use Database\Seeders\ItemsTableSeeder;
+use Database\Seeders\UsersTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
@@ -19,122 +22,76 @@ class ItemListTest extends TestCase
      * @return void
      */
 
-    // トレイトという下記の記述方法
     use RefreshDatabase;
 
-    protected $items;
-    protected $loginUser;
-
-    // コンストラクタは使用推奨されていないので、setUpメソッドにてダミーデータを取得し、それを繰り返してすとないぶで使用すること
-    /*public function __construct($name = null)
-    {
-        // TastCaseに定義されているコンストラクタを実行してください。なので、
-        parent::__construct($name);
-
-        $this->loginUser = new User([
-            'id' => 1,
-            'name' => 'テストユーザー',
-        ]);
-
-        $this->items = collect([
-            new Item([
-                'id' => 1,
-                'item_name' => 'テスト商品1',
-                'item_image' => 'dummy1.jpg',
-                'seller_id' => 2,
-                'buyer_id' => null, // 未購入
-            ]),
-            new Item([
-                'id' => 2,
-                'item_name' => 'テスト商品2',
-                'item_image' => 'dummy2.jpg',
-                'seller_id' => 3,
-                'buyer_id' => 5,
-            ]),
-            new Item([
-                'id' => 3,
-                'item_name' => '自分の商品',
-                'item_image' => 'dummy3.jpg',
-                'seller_id' => 1, // ログインユーザーが出品中
-                'buyer_id' => null,
-            ]),
-        ]);
-        }*/
-
-    // この程度ならあえてめそっど記述しなくてよし。せれぞれのところで記述すること
-    // 商品一覧画面表示メソッド
-    // public function getIndexPage()
-    // {
-    //     return $this->get('/')->assertStatus(200);
-    // }
-
-    // 商品一覧の取得
-    // 取得については、ダミーデータをsetUpメソッドに入れて取得しておけば、このテスト前にsetUpのメソッドが呼び出されるので、ただ$tresponseで返せばビューの内容も表示されるので問題なくできる
-    // Storageにおける画像の保存状態についてはこの部分のテストでは不要なのでOK
-    public function test_get_product_information()
-    {
-        $response = $this->getIndexPage();
-        Storage::fake('public/items');
-
-        foreach ($this->items as $item) {
-            $response->assertSee($item->item_name);
-            Storage::disk('public')->put('items/' . $item->item_image, 'dummy_content');
-            $this->assertTrue(
-                Storage::disk('public')->exists('items/' . $item->item_image),
-                "ファイル「items/{$item->item_image}」が存在しません"
-            );
-            $response->assertSee("storage/items/{$item->item_image}");
-        }
-    }
-
-
-    /*protected function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
-
-        Storage::fake('public');
-
-        Itemモデルにインスタンスを作成してDBに保存せずに進める方法
-        $dummyImages = ['dummy1.jpg', 'dummy2.jpg', 'dummy3.jpg',];
-        foreach ($dummyImages as $filename) {
-            Storage::disk('public')->put('items/' . $filename, 'dummy_content');
-        }
-        ここでテスト商品１が実際のＢｌａｄｅファイル上に明記がないことが問題になている
-        $this->items = collect([
-            new Item(['item_name' => 'テスト商品1', 'item_image' => 'dummy1.jpg']),
-            new Item(['item_name' => 'テスト商品2', 'item_image' => 'dummy2.jpg']),
-            new Item(['item_name' => 'テスト商品3', 'item_image' => 'dummy3.jpg']),
-        ]);
-
-
-        この書き方ではItemFactoryが必須になってしまうので__constructメソッドでFactoryを使用しない書き方が有用かと思われる
-        Storage::disk('public')->put('items/dummy.jpg', 'dummy_content');
-        $this->items = Item::factory()->count(10)->create([
-            'item_name' => 'テスト商品',
-            'item_image' => 'dummy.jpg'
-        ]);
+        $this->seed();
     }
 
-
-    // 商品一覧画面表示メソッド
-    public function getIndexPage()
-    {
-        return $this->get('/')->assertStatus(200);
-    }
-
-    // 全商品のデータを取得して商品一覧画面を開く
+    // 商品一覧の取得
     public function test_get_product_information()
     {
+        $response = $this->get('/');
+        $response->assertStatus(200);
+    }
 
-        $response = $this->getIndexPage();
+    // 購入済み商品は「Sold」と表示
+    public function test_sold_display_for_purchased_items()
+    {
+        $purchasedItem = Item::first();
 
-        foreach ($this->items as $item) {
-            $response->assertSee($item->item_name);
-            $this->assertTrue(
-                Storage::disk('public')->exists('items/' . $item->item_image),
-                "ファイル「items/{$item->item_image}」が存在しません"
-            );
-            $response->assertSee("storage/items/{$item->item_image}");
-        }
-    }*/
-}
+        $purchasingUser = User::factory()->create([
+            'id' => 2,
+            'name' => '購入ユーザー',
+            'email' => 'purchased@example.co.jp',
+            'password' => bcrypt('purchased'),
+        ]);
+
+        Purchase::create([
+            'user_id' => $purchasingUser->id,
+            'item_id' => $purchasedItem->id,
+            'payment' => 'card',
+            'shipping_post_code' => '123-4567',
+            'shipping_address' => '東京都テスト区1-1-1',
+            'shipping_building' => 'テストビル101',
+        ]);
+
+        $response = $this->get('/')->assertStatus(200);
+        $response->assertSee($purchasedItem->item_image);
+        $response->assertSee($purchasedItem->item_name);
+        $response->assertSee('Sold');
+    }
+
+    public function test_the_product_i_have_listed_is_not_displayed()
+    {
+        $exhibitionUser = User::factory()->create([
+            'id' => 3,
+            'name' => '出品ユーザー',
+            'email' => 'exhibition@example.co.jp',
+            'password' => bcrypt('exhibition'),
+        ]);
+
+        $exhibitionItem = Item::create([
+            'user_id' => 3,
+            'item_name' => '出品テスト',
+            'item_image' => 'dummy.jpg',
+            'brand' => null,
+            'price' => 1500,
+            'description' => '出品テストの説明文',
+            'condition' => 1,
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'exhibition@example.co.jp',
+            'password' => 'exhibition',
+        ]);
+        $response->assertRedirect('/');
+        $this->assertAuthenticatedAs($exhibitionUser);
+
+        $response = $this->get('/')->assertStatus(200);
+        $response->assertDontSee($exhibitionItem->item_image);
+        $response->assertDontSee($exhibitionItem->item_name);
+    }
+};
