@@ -18,6 +18,8 @@ class UsersTableSeeder extends Seeder
             'name' => 'テスト太郎',
             'email' => 'test1234@example.co.jp',
             'password' => bcrypt('password'),
+            // メール認証済みでテストユーザーがログインできた方が良いか確認中
+            'email_verified_at' => now(),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

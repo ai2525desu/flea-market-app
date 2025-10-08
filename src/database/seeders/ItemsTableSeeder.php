@@ -15,10 +15,11 @@ class ItemsTableSeeder extends Seeder
     public function run()
     {
         $categories = DB::table('categories')->pluck('id', 'category_name')->toArray();
+        $user = DB::table('users')->first();
 
         // 商品１：腕時計
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => '腕時計',
             'item_image' => 'items/Wristwatch.jpg',
             'brand' => null,
@@ -33,7 +34,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品2：HDD
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'HDD',
             'item_image' => 'items/HDD.jpg',
             'brand' => null,
@@ -48,7 +49,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品3：玉ねぎ3束
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => '玉ねぎ3束',
             'item_image' => 'items/Onion.jpg',
             'brand' => null,
@@ -63,7 +64,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品4：革靴
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => '革靴',
             'item_image' => 'items/LeatherShoes.jpg',
             'brand' => null,
@@ -79,7 +80,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品5：ノートPC
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'ノートPC',
             'item_image' => 'items/Laptop.jpg',
             'brand' => null,
@@ -95,7 +96,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品6：マイク
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'マイク',
             'item_image' => 'items/Microphone.jpg',
             'brand' => null,
@@ -111,7 +112,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品7：ショルダーバッグ
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'ショルダーバッグ',
             'item_image' => 'items/ShoulderBag.jpg',
             'brand' => null,
@@ -127,7 +128,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品8：タンブラー
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'タンブラー',
             'item_image' => 'items/Tumbler.jpg',
             'brand' => null,
@@ -144,7 +145,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品9：コーヒーミル
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'コーヒーミル',
             'item_image' => 'items/CoffeeMill.jpg',
             'brand' => null,
@@ -160,7 +161,7 @@ class ItemsTableSeeder extends Seeder
 
         // 商品10：メイクセット
         $itemId = DB::table('items')->insertGetId([
-            'user_id' => '1',
+            'user_id' => $user->id,
             'item_name' => 'メイクセット',
             'item_image' => 'items/MakeupSet.jpg',
             'brand' => null,
