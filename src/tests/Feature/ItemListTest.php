@@ -5,11 +5,7 @@ namespace Tests\Feature;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\User;
-use Database\Seeders\ItemsTableSeeder;
-use Database\Seeders\UsersTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 use function PHPUnit\Framework\assertNotEmpty;
@@ -40,14 +36,8 @@ class ItemListTest extends TestCase
     // 購入済み商品は「Sold」と表示
     public function test_sold_display_for_purchased_items()
     {
+        $purchasingUser = User::factory()->create();
         $purchasedItem = Item::first();
-
-        $purchasingUser = User::factory()->create([
-            'id' => 2,
-            'name' => '購入ユーザー',
-            'email' => 'purchased@example.co.jp',
-            'password' => bcrypt('purchased'),
-        ]);
 
         Purchase::create([
             'user_id' => $purchasingUser->id,
@@ -66,15 +56,11 @@ class ItemListTest extends TestCase
 
     public function test_the_product_i_have_listed_is_not_displayed()
     {
-        $exhibitionUser = User::factory()->create([
-            'id' => 3,
-            'name' => '出品ユーザー',
-            'email' => 'exhibition@example.co.jp',
-            'password' => bcrypt('exhibition'),
-        ]);
+        $exhibitionUser = User::factory()->create();
+
 
         $exhibitionItem = Item::create([
-            'user_id' => 3,
+            'user_id' => $exhibitionUser->id,
             'item_name' => '出品テスト',
             'item_image' => 'dummy.jpg',
             'brand' => null,
@@ -83,9 +69,10 @@ class ItemListTest extends TestCase
             'condition' => 1,
         ]);
 
+
         $response = $this->post('/login', [
-            'email' => 'exhibition@example.co.jp',
-            'password' => 'exhibition',
+            'email' => $exhibitionUser->email,
+            'password' => 'password',
         ]);
         $response->assertRedirect('/');
         $this->assertAuthenticatedAs($exhibitionUser);
