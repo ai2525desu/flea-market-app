@@ -60,7 +60,7 @@ class LoginTest extends TestCase
     {
         $this->getLoginPage();
 
-        $response = $this->post('/login', [
+        $response = $this->post("/login", [
             'email' => 'login-error@example.co.jp',
             'password' => 'wrongpassword'
         ]);

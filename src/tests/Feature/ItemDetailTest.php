@@ -57,13 +57,15 @@ class ItemDetailTest extends TestCase
         $response->assertSee($item->item_name);
         $response->assertSee($item->brand);
         $response->assertSee($item->price);
-        $response->assertSee($item->likes->count());
+        $item->load('likes');
+        $response->assertSee((string) $item->likes->count());
         $response->assertSee($item->description);
         $response->assertSee($condition);
         foreach ($item->categories as $category) {
             $response->assertSee($category->category_name);
         }
-        $response->assertSee($item->comments->count());
+        $item->load('comments');
+        $response->assertSee((string)$item->comments()->count());
         foreach ($item->comments as $comment) {
             $response->assertSee($comment->user->profile->image);
             $response->assertSee($comment->user->name);
