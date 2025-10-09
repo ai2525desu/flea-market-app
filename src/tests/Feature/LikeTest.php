@@ -45,6 +45,12 @@ class LikeTest extends TestCase
             'user_id' => $user->id,
             'item_id' => $item->id,
         ]);
+        $response->assertStatus(302);
+        $response->assertRedirect();
+        $this->assertDatabaseHas('likes', [
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
 
         $item->load('likes');
         $afterCount = $item->likes->count();
@@ -71,6 +77,12 @@ class LikeTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->post("/item/{$item->id}/like", [
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
+        $response->assertStatus(302);
+        $response->assertRedirect();
+        $this->assertDatabaseHas('likes', [
             'user_id' => $user->id,
             'item_id' => $item->id,
         ]);
@@ -104,6 +116,12 @@ class LikeTest extends TestCase
         $response->assertStatus(200);
 
         $response = $this->post("/item/{$item->id}/like", [
+            'user_id' => $user->id,
+            'item_id' => $item->id,
+        ]);
+        $response->assertStatus(302);
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('likes', [
             'user_id' => $user->id,
             'item_id' => $item->id,
         ]);
