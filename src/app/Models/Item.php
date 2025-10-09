@@ -67,10 +67,10 @@ class Item extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function scopeItemNameSearch($query, $item_name)
+    public function scopeItemNameSearch($query, $keyword)
     {
-        if (!empty($item_name)) {
-            $query->where('item_name', 'like', "%{$item_name}%");
+        if (!empty($keyword)) {
+            $query->where('item_name', 'like', "%{$keyword}%");
         }
         return $query;
     }
