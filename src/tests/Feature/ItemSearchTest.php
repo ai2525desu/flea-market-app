@@ -6,7 +6,6 @@ use App\Models\Item;
 use App\Models\Like;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ItemSearchTest extends TestCase
@@ -48,7 +47,7 @@ class ItemSearchTest extends TestCase
         $response->assertRedirect('/');
         $this->assertAuthenticatedAs($searchUser);
 
-        $likedItem = Item::first();
+        $likedItem = Item::with('likes')->first();
 
         Like::create([
             'user_id' => $searchUser->id,

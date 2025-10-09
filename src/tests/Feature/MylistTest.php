@@ -7,7 +7,6 @@ use App\Models\Like;
 use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class MylistTest extends TestCase
@@ -38,7 +37,7 @@ class MylistTest extends TestCase
         $this->assertAuthenticatedAs($likedUser);
 
 
-        $likedItem = Item::first();
+        $likedItem = Item::with('likes')->first();
 
         Like::create([
             'user_id' => $likedUser->id,
@@ -63,7 +62,7 @@ class MylistTest extends TestCase
         $response->assertRedirect('/');
         $this->assertAuthenticatedAs($purchasingUser);
 
-        $purchasedItem = Item::first();
+        $purchasedItem = Item::with('likes', 'purchase')->first();
 
         Like::create([
             'user_id' => $purchasingUser->id,
@@ -97,7 +96,7 @@ class MylistTest extends TestCase
         $response->assertRedirect('/');
         $this->assertAuthenticatedAs($exhibitionUser);
 
-        $likedItem = Item::first();
+        $likedItem = Item::with('likes')->first();
 
         Like::create([
             'user_id' => $exhibitionUser->id,

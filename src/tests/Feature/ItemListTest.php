@@ -8,8 +8,6 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-use function PHPUnit\Framework\assertNotEmpty;
-
 class ItemListTest extends TestCase
 {
     /**
@@ -37,7 +35,7 @@ class ItemListTest extends TestCase
     public function test_sold_display_for_purchased_items()
     {
         $purchasingUser = User::factory()->create();
-        $purchasedItem = Item::first();
+        $purchasedItem = Item::with('purchase')->first();
 
         Purchase::create([
             'user_id' => $purchasingUser->id,
