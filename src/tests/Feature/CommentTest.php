@@ -2,12 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Models\Comment;
 use App\Models\Item;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 use Tests\TestCase;
 
 class CommentTest extends TestCase

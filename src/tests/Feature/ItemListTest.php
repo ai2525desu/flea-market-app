@@ -52,6 +52,7 @@ class ItemListTest extends TestCase
         $response->assertSee('Sold');
     }
 
+    // 自分が出品した商品は表示されない
     public function test_the_product_i_have_listed_is_not_displayed()
     {
         $exhibitionUser = User::factory()->create();

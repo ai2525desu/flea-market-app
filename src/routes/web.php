@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/mypage', [ProfileController::class, 'show'])->name('profiles.show');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profiles.edit');
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
+    
     Route::get('/sell', [ItemController::class, 'showExhibition'])->name('items.exhibition');
     Route::post('/sell', [ItemController::class, 'storeExhibition']);
 
