@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Services\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Stripe\Webhook;
 
@@ -30,7 +29,19 @@ class PurchaseController extends Controller
         $user = Auth::user()->load('address');
         $purchase = Purchase::where('item_id', $item->id)->where('user_id', $user->id)->first();
         $isPurchased = $purchase ? true : false;
-        return view('purchases.show', compact('item', 'user', 'purchase', 'isPurchased'));
+        $selectedMethod = session('payment_method', null);
+        return view('purchases.show', compact('item', 'user', 'purchase', 'isPurchased', 'selectedMethod'));
+    }
+
+    // 支払い方法選択の小計部分への反映
+    public function updatePaymentMethod(Request $request, $item_id)
+    {
+        $request->validate([
+            'payment_method' => 'required|in:card, convenience_store',
+        ]);
+
+        session(['payment_method' => $request->payment_method]);
+        return response()->json(['message' => '支払い方法を更新しました']);
     }
 
     // Stripe画面への遷移
@@ -101,11 +112,9 @@ class PurchaseController extends Controller
                 $endpoint_secret
             );
         } catch (\Exception $e) {
-            // \Log::error('Stripe Webhook signature verification failed', ['error' => $e->getMessage()]);
             return response('Invalid signature', 400);
         }
 
-        // コンビニ決済は非同期なので両方のイベントを確認
         $validEvents = [
             'checkout.session.completed',
             'checkout.session.async_payment_succeeded'

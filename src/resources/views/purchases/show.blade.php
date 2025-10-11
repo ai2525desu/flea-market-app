@@ -52,9 +52,9 @@
                     </div>
                     <div class="payment-method__select">
                         <select name="payment_method" id="payment_method">
-                            <option value="" disabled selected>選択してください</option>
-                            <option value="convenience_store">コンビニ支払い</option>
-                            <option value="card">カード支払い</option>
+                            <option value="" disabled {{ empty($selectedMethod) ? 'selected' : '' }}>選択してください</option>
+                            <option value="convenience_store" {{ $selectedMethod === 'convenience_store'? 'selected' : '' }}>コンビニ支払い</option>
+                            <option value="card" {{ $selectedMethod === 'card'? 'selected' : '' }}>カード支払い</option>
                         </select>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                     </div>
                     <div class="subtotal__item--right">
                         <p class="subtotal__content" id="selected-method">
-                            選択してください
+                            {{ $selectedMethod === 'card'? 'カード支払い' : ($selectedMethod === 'convenience_store'? 'コンビニ支払い' : '選択してください') }}
                         </p>
                     </div>
                 </div>
@@ -129,8 +129,23 @@
 
 <script>
     document.getElementById('payment_method').addEventListener('change', function() {
+        const selectedValue = this.value;
         const selectedText = this.options[this.selectedIndex].text;
+
         document.getElementById('selected-method').textContent = selectedText;
+
+        fetch("{{ route('purchases.update_payment_method', ['item_id' => $item->id]) }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                },
+                body: JSON.stringify({
+                    payment_method: selectedValue
+                })
+            }).then(response => response.json())
+            .then(data => console.log(data.message));
     });
 </script>
+
 @endsection

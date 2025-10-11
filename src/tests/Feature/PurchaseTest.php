@@ -9,7 +9,6 @@ use App\Models\User;
 use App\Services\StripeService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Stripe\Checkout\Session as StripeSession;
 use Mockery;
 
 class PurchaseTest extends TestCase
