@@ -16,16 +16,10 @@ class LoginTest extends TestCase
 
     use RefreshDatabase;
 
-    // ログイン画面表示メソッド
-    public function getLoginPage()
-    {
-        return $this->get('/login')->assertStatus(200);
-    }
-
     // メールアドレス未入力のバリデーション確認
     public function test_login_email_not_entered_validation_error()
     {
-        $this->getLoginPage();
+        $this->get('/login')->assertStatus(200);
 
         $response = $this->post('/login', [
             'email' => '',
@@ -41,7 +35,7 @@ class LoginTest extends TestCase
     // パスワード未入力のバリデーション確認
     public function test_login_password_not_entered_validation_error()
     {
-        $this->getLoginPage();
+        $this->get('/login')->assertStatus(200);
 
         $response = $this->post('/login', [
             'email' => 'login-error@example.co.jp',
@@ -58,7 +52,7 @@ class LoginTest extends TestCase
     // ログイン情報不一致のエラーメッセージ確認
     public function test_login_information_mismatch_error()
     {
-        $this->getLoginPage();
+        $this->get('/login')->assertStatus(200);
 
         $response = $this->post("/login", [
             'email' => 'login-error@example.co.jp',
@@ -70,7 +64,7 @@ class LoginTest extends TestCase
 
     public function test_login_successful()
     {
-        $this->getLoginPage();
+        $this->get('/login')->assertStatus(200);
 
         $user = User::factory()->create([
             'email' => 'login@example.co.jp',

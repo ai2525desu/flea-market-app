@@ -13,19 +13,13 @@ class RegisterTest extends TestCase
      * @return void
      */
 
-    
-    use RefreshDatabase;
 
-    // 会員登録画面表示メソッド
-    public function getRegisterPage()
-    {
-        return $this->get('/register')->assertStatus(200);
-    }
+    use RefreshDatabase;
 
     // 名前未入力のバリデーション確認
     public function test_registration_name_not_entered_validation_error()
     {
-        $this->getRegisterPage();
+        $this->get('/register')->assertStatus(200);
 
         $response = $this->post('/register', [
             'name' => '',
@@ -44,7 +38,7 @@ class RegisterTest extends TestCase
     // メールアドレス未入力のバリデーション確認
     public function test_registration_email_not_entered_validation_error()
     {
-        $this->getRegisterPage();
+        $this->get('/register')->assertStatus(200);
 
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
@@ -63,7 +57,7 @@ class RegisterTest extends TestCase
     // パスワード未入力のバリデーション確認
     public function test_registration_password_not_entered_validation_error()
     {
-        $this->getRegisterPage();
+        $this->get('/register')->assertStatus(200);
 
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
@@ -83,7 +77,7 @@ class RegisterTest extends TestCase
     // パスワードが7文字以内のバリデーション確認
     public function test_registration_password_length_validation_error()
     {
-        $this->getRegisterPage();
+        $this->get('/register')->assertStatus(200);
 
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
@@ -103,7 +97,7 @@ class RegisterTest extends TestCase
     // パスワードの不一致のバリデーション確認
     public function test_registration_password_mismatch_validation_error()
     {
-        $this->getRegisterPage();
+        $this->get('/register')->assertStatus(200);
 
         $response = $this->post('/register', [
             'name' => 'テストユーザー',
