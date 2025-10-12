@@ -1,5 +1,4 @@
 # 模擬案件_フリマ：flea-market-app
-<!-- 7/30書けるところまで明記、最終提出前に必ずチェックすること -->
 
 ## 前提条件
 - Gitがインストールされている
@@ -40,7 +39,7 @@
     MAIL_FROM_NAME="${APP_NAME}"
     ```
     * Stripeに関する記述
-     - 各キーはStripe(https://stripe.com/jp)のダッシュボードより取得したキーをコピー＆ペーストし、記述する
+     - 各キーは [Stripe](https://stripe.com/jp)のダッシュボードより取得したキーをコピー＆ペーストし、記述する
     ```
     STRIPE_KEY=pk_test_****
     STRIPE_SECRET=sk_test_****
