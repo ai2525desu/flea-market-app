@@ -22,7 +22,6 @@ class PurchaseController extends Controller
         $this->stripe = $stripe;
     }
 
-    // 商品購入画面
     public function showPurchase(Request $request, $item_id)
     {
         $item = Item::with('purchase')->findOrFail($item_id);
@@ -33,7 +32,6 @@ class PurchaseController extends Controller
         return view('purchases.show', compact('item', 'user', 'purchase', 'isPurchased', 'selectedMethod'));
     }
 
-    // 支払い方法選択の小計部分への反映
     public function updatePaymentMethod(Request $request, $item_id)
     {
         $request->validate([
@@ -44,7 +42,6 @@ class PurchaseController extends Controller
         return response()->json(['message' => '支払い方法を更新しました']);
     }
 
-    // Stripe画面への遷移
     public function transitionToStripe(PurchaseRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -81,13 +78,12 @@ class PurchaseController extends Controller
         return redirect($session->url);
     }
 
-    // カード決済が成功し、リダイレクトされる場合のアクション
-    public function storeCardPurchase(Request $request, $item_id)
+    public function storeCardPurchase($item_id)
     {
         $user = Auth::user();
         $item = Item::findOrFail($item_id);
 
-        $purchase = Purchase::firstOrCreate(
+        Purchase::firstOrCreate(
             ['user_id' => $user->id, 'item_id' => $item->id],
             [
                 'payment_method' => 'card',
@@ -100,7 +96,6 @@ class PurchaseController extends Controller
         return redirect()->route('purchases.show', $item->id);
     }
 
-    // コンビニ決済完了時の Webhook
     public function storeConveniencePurchase(Request $request)
     {
         $endpoint_secret = config('services.stripe.webhook_secret');

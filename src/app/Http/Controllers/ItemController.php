@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-    // 商品一覧画面
+
     public function index(Request $request)
     {
         $tab = $request->query('tab');
@@ -40,7 +40,6 @@ class ItemController extends Controller
         return view('items.index', compact('items', 'tab'));
     }
 
-    // 商品詳細画面
     public function detail($item_id)
     {
         $user = Auth::user();
@@ -50,7 +49,6 @@ class ItemController extends Controller
         return view('items.detail', compact('user', 'item', 'condition', 'hasPurchase'));
     }
 
-    // いいね機能
     public function like($item_id)
     {
 
@@ -69,7 +67,6 @@ class ItemController extends Controller
         return back();
     }
 
-    // コメント機能
     public function comment(CommentRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
@@ -82,7 +79,6 @@ class ItemController extends Controller
         return back();
     }
 
-    // 商品出品画面
     public function showExhibition()
     {
         $user = Auth();
@@ -91,7 +87,6 @@ class ItemController extends Controller
         return view('items.exhibition', compact('user', 'categories', 'conditions'));
     }
 
-    // 出品機能
     public function storeExhibition(ExhibitionRequest $request)
     {
         if ($request->hasFile('item_image')) {
