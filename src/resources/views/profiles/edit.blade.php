@@ -42,7 +42,7 @@
                     </label>
                 </div>
                 <div class="profile-edit-form__group--content">
-                    <input id="user_name" type="text" name="name" value="{{ $user->name }}">
+                    <input id="user_name" type="text" name="name" value="{{ old('name', $user->name) }}">
                 </div>
                 <div class="profile-edit-form__group--error">
                     @error('name')

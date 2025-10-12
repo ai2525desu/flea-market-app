@@ -38,16 +38,13 @@
     height: auto;
 }
 
-
 .header__form {
     width: calc(100% / 3);
 }
 
-
 .header__item {
     width: calc(100% / 3);
 }
-
 
 @media screen and (max-width:850px) {
     .header__inner {

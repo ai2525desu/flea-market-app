@@ -15,7 +15,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    // itemsのマイグレーションファイル：enum型の定数
+    // itemsテーブルのenum型の定数を定義
     const CONDITION = [
         1 => '良好',
         2 => '目立った傷や汚れなし',

@@ -29,7 +29,6 @@
     width: calc(100% / 3);
 }
 
-
 .header__logo--item {
     text-decoration: none;
 }
@@ -112,7 +111,6 @@
     line-height: 40px;
 }
 
-
 .screen-transition {
     color: #FFFFFF;
 }
@@ -125,7 +123,6 @@
     min-width: 25px;
 }
 
-/* レスポンシブ対応 */
 @media screen and (max-width:890px) {
     .header__inner {
         min-height: 60px;

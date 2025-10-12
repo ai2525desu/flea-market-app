@@ -20,7 +20,6 @@
     font-style: normal;
 }
 
-
 .detail-content__product-image {
     grid-area: image;
     width: 80%;
@@ -245,8 +244,7 @@
 }
 
 .existing-comment__user-wrap--name {
-    font-family: "Inter",
-        sans-serif;
+    font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
     font-weight: 700;
     font-style: normal;

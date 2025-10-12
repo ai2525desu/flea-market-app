@@ -32,7 +32,7 @@ class PurchaseController extends Controller
         return view('purchases.show', compact('item', 'user', 'purchase', 'isPurchased', 'selectedMethod'));
     }
 
-    public function updatePaymentMethod(Request $request, $item_id)
+    public function updatePaymentMethod(Request $request)
     {
         $request->validate([
             'payment_method' => 'required|in:card, convenience_store',

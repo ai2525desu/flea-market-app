@@ -44,7 +44,6 @@
     overflow: hidden;
 }
 
-
 .profile-image__content img {
     display: inline-block;
     width: 100%;
@@ -126,8 +125,6 @@
     cursor: pointer;
 }
 
-
-
 @media screen and (max-width:850px) {
     .profile-edit-form__heading {
         font-size: 32px;
@@ -151,7 +148,6 @@
         width: 100px;
         height: 100px;
     }
-
 
     .profile-image__content img {
         display: inline-block;
@@ -194,5 +190,4 @@
         height: 22px;
         font-size: 14px;
     }
-
 }
