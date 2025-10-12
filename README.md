@@ -7,7 +7,6 @@
     - SSH接続が設定済みであること
 - Docker & Docker Composeを使用できる状態
 
-
 ## 環境構築
 
 **Dockerビルド**
@@ -71,6 +70,23 @@
 * CategoriesTableSeeder.php
 * ItemsTableSeeder.php
 
+## PHPUnit/テスト環境の準備と実行について**
+**テスト環境の準備**
+1. 「.env.testing.example」を「.env.testing」に命名変更。または、新しく「.env.testing」ファイルを作成する。
+    - あらかじめStripe決済の秘密鍵等はダミー値。
+    - Mailhogの内容は「.env」と変更なし。
+    - アプリケーションキーは空の状態。
+2. 「.env.testing」に対してアプリケーションキーを取得。
+    ``` php artisan key:generate --env=testing```
+※ PHPUnit 実行前に migrate や seed を手動で実行する必要はありません。
+
+**PHPUnitの実行**
+1. phpコンテナに入る<br>
+    ``` docker compose exec php bash ```
+2. 下記のコマンドでテストを実行する<br>
+    ``` php artisan test ```
+
+
 ## 使用環境（実行環境）
 - Windows 11 Home
 - Ubuntu 24.04.1 LTS
@@ -82,7 +98,7 @@
 - mysql:8.0.26
 - Mailhog
 
-# テスト用のログインユーザー情報
+## 用意されているログインユーザー情報
     下記のユーザーでログイン可能です。
     全ダミー商品を出品しているユーザーの情報になります。
 - **Email**: `test1234@example.co.jp`  
@@ -104,7 +120,13 @@
     - テストカード番号例: 4242 4242 4242 4242 / 期限任意 / CVC
 3. 支払うを押して決済を完了する
 
-## Stripeを使用したカード決済テストの手順(ローカルサーバーの場合)
+## Stripeを使用したコンビニ決済テストの手順(ローカルサーバーの場合)
+**StripeCLIのインストール**
+- コンビニ決済テストを行うには、StripeCLIが必要です
+- 公式ドキュメントを参照し、インストールしてください
+    [Stripe DOCS](https://docs.stripe.com/)
+
+**テスト手順**
 1. Stripe CLIによってWebhookと接続状態にする
     - **コンテナの再起動時やLaravelサーバーの再起動時には毎回この手順が必要**
     - Stripeにログイン<br>
@@ -112,8 +134,7 @@
     - Webhookに接続<br>
         ``` stripe listen --forward-to http://localhost/stripe/webhook ```
 2. 商品購入画面で支払い方法をコンビニ決済に選択
-    - 「購入する」をクリック
-    - Stripe決済画面に遷移する
+    - 「購入する」をクリックすると、Stripe決済画面に遷移する
 3. 決済画面で下記のメールアドレスを入力する
     - コンビニ決済を即時に完了するテストアドレス<br>
         ``` succeed_immediately@test.com ```
