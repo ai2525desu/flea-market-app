@@ -70,7 +70,7 @@
 * CategoriesTableSeeder.php
 * ItemsTableSeeder.php
 
-## PHPUnit/テスト環境の準備と実行について**
+## PHPUnit/テスト環境の準備と実行について
 **テスト環境の準備**
 1. 「.env.testing.example」を「.env.testing」に命名変更。または、新しく「.env.testing」ファイルを作成する。
     - あらかじめStripe決済の秘密鍵等はダミー値。
@@ -99,16 +99,16 @@
 - Mailhog
 
 ## 用意されているログインユーザー情報
-    下記のユーザーでログイン可能です。
-    全ダミー商品を出品しているユーザーの情報になります。
-- **Email**: `test1234@example.co.jp`  
-- **Password**: `password`
+- 下記のユーザーでログイン可能です。
+- 全ダミー商品を出品しているユーザーの情報になります。
+    - **Email**: `test1234@example.co.jp`  
+    - **Password**: `password`
 
 ## Mailhogを使用したメール送信テストの手順
 1. ユーザーの会員登録を行う
     - 会員登録時に自動的に認証メールが送信される
 2. メール認証画面(/email/verify)より「認証はこちら」をクリック
-    - クリック後、Mailhog(URL:http://localhost:8025/)の画面に遷移する
+    - クリック後、[Mailhog](http://localhost:8025/)の画面に遷移する
     - 再送の場合は「認証メールを再送する」を選択する
 3. Mailhog Web UIで届いた認証メールを確認し、認証する
 4. 認証完了後、自動的にプロフィール設定画面に遷移
