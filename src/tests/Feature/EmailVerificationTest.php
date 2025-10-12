@@ -53,18 +53,38 @@ class EmailVerificationTest extends TestCase
     public function test_transit_to_email_authentication_site()
     {
         $user = User::factory()->create([
-            'email_verifield_at' => null,
+            'email_verified_at' => null,
         ]);
-        
+
+
+        $response = $this->actingAs($user)->get('/email/verify');
+        $response->assertStatus(200);
+        $response->assertSee('認証はこちらから');
+        $response->assertSee('http://localhost:8025/');
+    }
+
+    // メール認証を完了するとプロフィール設定画面に遷移する
+    public function test_transition_after_completing_email_authentication()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get('/email/verify');
+        $response->assertStatus(200);
+
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
             now()->addMinutes(60),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
-        
-        // こちらのメール認証後の遷移先確認中ー＞商品一覧に遷移するとあるが会員登録後のフローとしてどうなのか？
-        $user->actingAs($user)->get($verificationUrl)->assert('/mypage/profile');
-        $this->get('/email/verify')->assertStatus(200);
-        
+
+        $response = $this->actingAs($user)->get($verificationUrl);
+        $response->assertStatus(302);
+        $response->assertRedirect('/mypage/profile');
+
+        $this->assertNotEmpty($user->fresh()->email_verified_at);
     }
 }
