@@ -21,7 +21,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// 未承認ユーザー閲覧可能
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 Route::get('/item/{item_id}', [ItemController::class, 'detail'])->name('items.detail');
 
@@ -31,7 +30,6 @@ Route::post('/register', [AuthController::class, 'store']);
 Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
-// メール認証関連
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
@@ -44,12 +42,9 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     return redirect()->route('profiles.edit');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
-// Webhook受信
 Route::post('/stripe/webhook', [PurchaseController::class, 'storeConveniencePurchase'])->withoutMiddleware([VerifyCsrfToken::class, Authenticate::class]);
 
-// ユーザー認証後閲覧可能
 Route::middleware(['auth', 'verified'])->group(function () {
-
     Route::post('/item/{item_id}/like', [ItemController::class, 'like'])->name('items.like');
     Route::post('/item/{item_id}/comment', [ItemController::class, 'comment'])->name('items.comment');
 

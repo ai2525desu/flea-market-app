@@ -13,7 +13,7 @@ use Tests\TestCase;
 class EmailVerificationTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * メール認証に関するテスト
      *
      * @return void
      */

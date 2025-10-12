@@ -62,6 +62,7 @@ class LoginTest extends TestCase
         $response->assertSessionHas('errorMessage', 'ログイン情報が登録されていません。');
     }
 
+    // ログイン成功時のテスト
     public function test_login_successful()
     {
         $this->get('/login')->assertStatus(200);

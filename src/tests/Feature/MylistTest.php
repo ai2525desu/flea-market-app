@@ -84,7 +84,7 @@ class MylistTest extends TestCase
         $response->assertSee('Sold');
     }
 
-
+    // 未承認ユーザーにはマイリスト上で何も表示されないテスト
     public function test_mylist_the_product_i_have_listed_is_not_displayed()
     {
 
