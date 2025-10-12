@@ -52,7 +52,7 @@ class ObtainingUserInformationTest extends TestCase
             [
                 'user_id' => $this->user->id,
                 'item_name' => '出品商品1',
-                'item_image' => 'dummy.jpg1',
+                'item_image' => 'dummy1.jpg',
                 'brand' => null,
                 'price' => 1500,
                 'description' => '出品商品1の説明文',
