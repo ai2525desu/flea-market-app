@@ -79,6 +79,14 @@
 2. 「.env.testing」に対してアプリケーションキーを取得。
     ``` php artisan key:generate --env=testing```
 ※ PHPUnit 実行前に migrate や seed を手動で実行する必要はありません。
+3. mysqlのコンテナ内に入る
+    ``` docker compose exec mysql bash ```
+4. mysqlをrootユーザーで使用する。
+    ``` mysql -u root -p ```
+5. passwordにrootを入力する。
+    ``` root ```
+6. flea_market_testのDBを作成する
+    ``` CREATE DATABASE flea_market_test ```
 
 **PHPUnitの実行**
 1. phpコンテナに入る<br>
