@@ -40,6 +40,7 @@
     ```
     * Stripeに関する記述
      - 各キーは [Stripe](https://stripe.com/jp)のダッシュボードより取得したキーをコピー＆ペーストし、記述する
+     - Webhookの秘密鍵は`stripe listen --forward-to http://localhost/stripe/webhook`にて取得したキーを記述する
     ```
     STRIPE_KEY=pk_test_****
     STRIPE_SECRET=sk_test_****
